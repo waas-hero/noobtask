@@ -24,10 +24,13 @@ This is the long description.  No limit, and we can use Markdown (as well as in 
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= Is this plugin multisite compatible? =
 
-An answer to that question.
+Yes, you can activate it per site and it will function normally.
 
+= Will this plugin work without a Karta account? =
+
+Yes, although you will lose the tagging functionality. 
 
 == Screenshots ==
 
