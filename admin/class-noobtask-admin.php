@@ -182,12 +182,18 @@ class Noobtask_Admin {
 			</div>
 		</div>
 		<!-- The Modal -->
-		<div id="noobtaskModal" class="modal" style="">
-			<div class="modal-inner" >
+		<div id="noobtaskModal" class="noobtask-modal" style="">
+			<div class="noobtask-modal-inner" >
 				<!-- Modal content -->
-				<div class="modal-content">
-				<div class="noobtask-modal-title"></div>
-				<span class="close">&times;</span>
+				<div class="noobtask-modal-content">
+					<div class="noobtask-modal-header">
+						<span class="noobtask-text">
+							<span class="">Task: </span>
+							<span class="noobtask-modal-title"></span>
+						</span>
+						
+						<span id="noobtaskCloseBtn" class="noobtask-close">&times;</span>
+					</div>
 				<p class="noobtask-message">You still need to complete this task.</p>
 				<a class="noobtask-modal-link"><?php echo __('Complete Task'); ?></a>
 				<button class="noobtask-complete-btn"><?php echo __('Mark Task As Complete'); ?></button>
@@ -203,7 +209,7 @@ class Noobtask_Admin {
 				var btn = document.getElementById("noobtaskBtn");
 
 				// Get the <span> element that closes the modal
-				var span = document.getElementsByClassName("close")[0];
+				var span = document.getElementById("noobtaskCloseBtn");
 
 				jQuery(".noobtask-complete-btn").click(function () {
 					var taskID = jQuery(this).attr("data-id");
@@ -229,19 +235,20 @@ class Noobtask_Admin {
 					var name = task.task_name;
 					
 					jQuery(".noobtask-modal-title").text(task.task_name);
-					jQuery(".noobtask-complete-btn").attr('data-id', task.task_id);
-					jQuery(".noobtask-complete-btn").attr('data-tag', task.task_tag);
-
-					if(task.task_completed){
+	
+					if(task.task_completed == 1){
+						jQuery(".noobtask-complete-btn").hide();
 						jQuery(".noobtask-message").text('Task Complete!');
-					} 
-
+					} else {
+						jQuery(".noobtask-complete-btn").attr('data-id', task.task_id);
+						jQuery(".noobtask-complete-btn").attr('data-tag', task.task_tag);
+					}
+					
 					if(task.task_link){
 						jQuery(".noobtask-modal-link").attr('href', task.task_link+'?highlight='+task.task_selector);
 					} else {
 						jQuery(".noobtask-modal-link").hide();
 					}
-					
 					
 					modal.style.display = "flex";
 				});
