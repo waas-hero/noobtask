@@ -193,6 +193,7 @@ class Noobtask {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'wp_dashboard_setup', $plugin_admin,'add_dashboard_widgets' );
+		$this->loader->add_action( 'noobtask_cron_hook',  $plugin_admin, 'noobtask_cron_exec' );
 
 	}
 

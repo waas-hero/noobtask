@@ -268,6 +268,36 @@ class Kartra_Api {
         }
     }
 
+    function getKartraLists(){
+
+        $array = array(
+            'app_id' => self::NOOBTASK_APP_ID,
+            'api_key' => self::$noobtask_user_api_key,
+            'api_password' => self::$noobtask_user_api_pass,
+            'actions' => array(
+                '0' =>array(
+                    'cmd' => 'retrieve_account_lists'
+                ),
+            )
+        );
+            
+        $server_json = self::curlPostKartra($array);
+   
+        // CONDITIONAL FOR FURTHER INSTRUCTIONS…
+        if ($server_json->status == "Error") {
+            return [
+                'status' => 500,
+                'message' => $server_json->message,
+                'type' => $server_json->type
+            ];
+        } elseif ($server_json->status == "Success") {
+            return [
+                'status' => 200,
+                'account_lists' => $server_json->account_lists
+            ];
+        }
+    }
+
         /**
      * Developers section callback function.
      *

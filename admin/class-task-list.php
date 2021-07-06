@@ -130,22 +130,25 @@ class Task_List extends WP_List_Table {
             switch ( $column_name ) {
             case 'task_name':
                 return '<p style="font-size:15px;"><b>'.$item[ $column_name ]."</b></p>";
-            case 'task_type':
-                case 'task_link':
-                    case 'task_selector':
+
+            case 'task_link':
+            case 'task_selector':
+
                 return "<p>".$item[ $column_name ]."</p>";
+
+            case 'task_list':
+            case 'task_tag':
+            
+                return "<p style='color:blue;'>".$item[ $column_name ]."</p>";
+
             case 'task_completed':
                 if($item[ $column_name ] == 1){
                     return '<p class="text-green" style="color:green;"><i>'.__('Task Complete!').'</i>';
                 } else {
                     return '<p class="text-red" style="color:red;"><i>'.__('Task NOT Complete').'</i>';
                 }
-            case 'task_tag':
-      
-                return "<i>".$item[ $column_name ]."</i>";
-                
             default:
-            return $item[ $column_name ].print_r( $item, true ); //Show the whole array for troubleshooting purposes
+            return $item[ $column_name ].print_r( $item, true ); //Show the array for troubleshooting 
         }
     }
 
@@ -171,7 +174,7 @@ class Task_List extends WP_List_Table {
             'task_name' => __( 'Name', 'sp' ),
             'task_link' => __( 'Link', 'sp' ),
             'task_selector' => __( 'Selector', 'sp' ),
-            'task_type' => __( 'Level', 'sp' ),
+            'task_list' => __( 'Link', 'sp' ),
             'task_tag' => __( 'Tag', 'sp' ),
             'task_completed' => __( 'Status', 'sp' ),
         ];
@@ -187,8 +190,9 @@ class Task_List extends WP_List_Table {
     public function get_sortable_columns() {
         $sortable_columns = array(
             'task_name' => array( 'task_name', true ),
-            'task_type' => array( 'task_type', true ),
+            'task_list' => array( 'task_list', true ),
             'task_tag' => array( 'task_tag', true ),
+            'task_list' => array( 'task_list', true ),
             'task_completed' => array( 'task_completed', true )
         );
         

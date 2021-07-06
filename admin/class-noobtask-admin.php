@@ -102,6 +102,11 @@ class Noobtask_Admin {
 
 	}
 
+	public function noobtask_cron_exec(){
+		
+	}
+	
+	
 	/**
 	 * Add a widget to the dashboard.
 	 *
@@ -165,10 +170,11 @@ class Noobtask_Admin {
 			), $atts );
 
 		$tasks = self::get_tasks();
-
+		
 		?>
 			
 		<div class="noobtask-list-container">
+		
 			<p class="noobtask-title"><?php echo strtoupper(__('Get Started')); ?></p>
 			<div class="noobtask-list<?php echo $a['classes']; ?>" style="width:100%; list-style-type: none;<?php echo $a['style']; ?>">
 				<button class="task-open-btn"><</button>
@@ -195,8 +201,8 @@ class Noobtask_Admin {
 						<span id="noobtaskCloseBtn" class="noobtask-close">&times;</span>
 					</div>
 				<p class="noobtask-message">You still need to complete this task.</p>
-				<a class="noobtask-modal-link"><?php echo __('Complete Task'); ?></a>
-				<button class="noobtask-complete-btn"><?php echo __('Mark Task As Complete'); ?></button>
+				<a class="noobtask-modal-btn noobtask-modal-link"><?php echo __('Complete Task'); ?></a>
+				<button class="noobtask-modal-btn noobtask-complete-btn"><?php echo __('Mark Task As Complete'); ?></button>
 				</div>
 			</div>
 		</div>
@@ -224,6 +230,7 @@ class Noobtask_Admin {
 							'action' : 'complete_noobtask_ajax',
 							'task_id': taskID,
 							'task_tag': taskTag,
+							'task_list': taskList,
 						},
 						success: function(data){
 							console.log(data);
@@ -242,8 +249,10 @@ class Noobtask_Admin {
 					} else {
 						jQuery(".noobtask-complete-btn").attr('data-id', task.task_id);
 						jQuery(".noobtask-complete-btn").attr('data-tag', task.task_tag);
+						jQuery(".noobtask-complete-btn").attr('data-list', task.task_list);
 					}
 					
+					//Add appropriate button
 					if(task.task_link){
 						jQuery(".noobtask-modal-link").attr('href', task.task_link+'?highlight='+task.task_selector);
 					} else {

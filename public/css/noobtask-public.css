@@ -109,18 +109,19 @@
     text-decoration: none;
     cursor: pointer;
 }
-.noobtask-modal-link{
+.noobtask-modal-btn{
     padding: 10px 15px;
-    background: #2e3ad0;
-    color: white;
     text-decoration: none;
     border-radius: 8px;
     margin-top: 20px;
     display: inline-block;
-
+}
+.noobtask-modal-link{
+    background: #2e3ad0;
+    color: white;
 }
 button.noobtask-item.noobtask-incomplete{
-    background-color:#a1bba1 ;
+    background-color:#a1bba1 !important;
 }
 .noobtask-text{
     display: flex;

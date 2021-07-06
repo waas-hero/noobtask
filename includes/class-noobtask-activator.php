@@ -30,7 +30,9 @@ class Noobtask_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		
+		if ( ! wp_next_scheduled( 'noobtask_cron_hook' ) ) {
+			wp_schedule_event( time(), 'hourly', 'noobtask_cron_hook' );
+		}
 	}
 
 	public function create_db_table() {
@@ -43,7 +45,7 @@ class Noobtask_Activator {
 		$task_sql = "CREATE TABLE $task_table_name (
 			task_id INTEGER NOT NULL AUTO_INCREMENT,
 			task_name TEXT NOT NULL,
-			task_type TEXT NULL,
+			task_list TEXT NULL,
 			task_link TEXT NULL,
 			task_selector TEXT NULL,
 			task_completed boolean NULL,

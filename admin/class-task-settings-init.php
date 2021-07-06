@@ -30,6 +30,10 @@ class Task_Settings_Init {
     public $tasks_obj;
     public $tags_object;
 
+    function noobtask_print_cron() {
+		echo '<pre>'; print_r( _get_cron_array() ); echo '</pre>';
+	}
+
     /**
      * @internal never define functions inside callbacks.
      * these functions could be run multiple times; this would result in a fatal error.
@@ -231,7 +235,7 @@ class Task_Settings_Init {
         global $wpdb;
 
         $task_name = sanitize_text_field($_POST["task_name"]);
-        $task_type = sanitize_text_field($_POST["task_type"]);
+        $task_list = sanitize_text_field($_POST["task_list"]);
         $task_tag = sanitize_text_field($_POST["task_tag"]);
         $task_link = sanitize_url($_POST["task_link"]);
         $task_selector = sanitize_text_field($_POST["task_selector"]);
@@ -243,7 +247,7 @@ class Task_Settings_Init {
                             'task_name' => $task_name, 
                             'task_link' => $task_link,
                             'task_selector' => $task_selector,
-                            'task_type' => $task_type, 
+                            'task_list' => $task_list, 
                             'task_tag' => $task_tag, 
                             'task_completed' => false,
                         )
@@ -254,7 +258,7 @@ class Task_Settings_Init {
                 'task_name' => $task_name, 
                 'task_link' => $task_link,
                 'task_selector' => $task_selector,
-                'task_type' => $task_type, 
+                'task_list' => $task_list, 
                 'task_tag' => $task_tag, 
                 'task_completed' => false,
             )));
@@ -330,6 +334,9 @@ class Task_Settings_Init {
         <h1 class=""><?php echo esc_html( 'Noob Tasks' ); ?></h1>
             
         <div class="" style="background:white; padding:20px; border-radius:8px; margin-top:20px;">
+        
+       
+
         <form method="POST" action="" id="task_form">
             <table class="form-table" role="presentation">
                 <tbody>
@@ -364,29 +371,29 @@ class Task_Settings_Init {
                         <td>
                         <?php $tags = $this->kartra_obj->getKartraTags(); ?>
                             <select id="task_tag" name="task_tag" style="width:100%; max-width:300px;">
-                                <?php foreach($tags['account_tags'] as $tag){ ?>
+                                <?php if(!$tags['account_tags']){ echo '<option value="null">'.__('No Tags Found').'</option>'; } else {
+                                    foreach($tags['account_tags'] as $tag){ ?>
                                     <option value="<?php echo $tag; ?>"><?php echo $tag; ?></option>
-                                <?php } ?>
+                                <?php } } ?>
                             </select>
                         </td>
                     </tr> 
                     <tr class="noobtask_row">
                         <th scope="row">
-                            <label for="task_type">Task Level</label>
+                            <label for="task_tag">Kartra List</label>
                         </th>
                         <td>
-                            <select id="task_type" name="task_type" style="width:100%; max-width:300px;">
-                                <option value="level_1">
-                                    Level 1            </option>
-                                <option value="level_2">
-                                    Level 2            </option>
-                                <!-- <option value="level_3">
-                                    Level 3            </option>
-                                <option value="level_4">
-                                    Level 4            </option> -->
+                        <?php $lists = $this->kartra_obj->getKartraLists(); ?>
+                            <select id="task_list" name="task_list" style="width:100%; max-width:300px;">
+                                <?php if(!$lists['account_lists']){ echo '<option value="null">'.__('No Lists Found').'</option>'; } else {
+                                    foreach($lists['account_lists'] as $list){ 
+                                    ?>
+                                    <option value="<?php echo $list; ?>"><?php echo $list; ?></option>
+                                <?php } } ?>
                             </select>
                         </td>
-                    </tr>  
+                    </tr> 
+       
                    
                 </tbody>
             </table>
@@ -406,7 +413,7 @@ class Task_Settings_Init {
                         'task_name': this.elements.task_name.value,
                         'task_link': this.elements.task_link.value,
                         'task_selector': this.elements.task_selector.value,
-                        'task_type': this.elements.task_type.value,
+                        'task_list': this.elements.task_list.value,
                         'task_tag': this.elements.task_tag.value,
                     },
                     success: function(data){
@@ -414,7 +421,7 @@ class Task_Settings_Init {
                             // var taskTableLastRow = jQuery('#the-list');
                             // var newId = taskTableLastRow.value + 1;
                             // taskTableLastRow.append(
-                            // '<tr><th scope="row" class="check-column"><input type="checkbox" name="bulk-delete[]" value="'+newId+'"></th><td class="task_name column-task_name has-row-actions column-primary" data-colname="Name"><p style="font-size:15px;"><b>'+data.data.task_name+'</b></p><button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button></td><td class="task_type column-task_type" data-colname="Type"><p>'+data.data.task_type+'</p></td><td class="task_tag column-task_tag" data-colname="Tag"><i>'+data.data.task_tag+'</i></td><td class="task_completed column-task_completed" data-colname="Status"><p class="text-red" style="color:red;"><i>--</i></p></td></tr>'
+                            // '<tr><th scope="row" class="check-column"><input type="checkbox" name="bulk-delete[]" value="'+newId+'"></th><td class="task_name column-task_name has-row-actions column-primary" data-colname="Name"><p style="font-size:15px;"><b>'+data.data.task_name+'</b></p><button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button></td><td class="task_list column-task_list" data-colname="Type"><p>'+data.data.task_list+'</p></td><td class="task_tag column-task_tag" data-colname="Tag"><i>'+data.data.task_tag+'</i></td><td class="task_completed column-task_completed" data-colname="Status"><p class="text-red" style="color:red;"><i>--</i></p></td></tr>'
                             // );
                             location.href = '<?php echo $redirect_url; ?>';
                         }else{
