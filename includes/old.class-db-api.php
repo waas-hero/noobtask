@@ -1,5 +1,6 @@
 <?php 
 namespace WaasHero;
+
 class Db_Api {
 
     private static function _table() {

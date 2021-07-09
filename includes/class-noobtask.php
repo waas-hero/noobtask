@@ -81,7 +81,7 @@ class Noobtask {
 
 		$this->load_dependencies();
 		$this->define_kartra_api_hooks();
-
+		$this->define_default_tasks();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
@@ -136,9 +136,14 @@ class Noobtask {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-kartra-api.php';
 
 		/**
-		 * The class responsible for defining all tag lists.
+		 * The class responsible for defining all default tasks.
 		 */
-		//require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-kartra-tag-list.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-default-tasks.php';
+
+		/**
+		 * The class responsible for defining all the cron jobs.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cron-jobs.php';
 
 		/**
 		 * The class responsible for defining all task lists.
@@ -149,13 +154,6 @@ class Noobtask {
 		 * The class responsible for defining all task settings and related ajax actions.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-task-settings-init.php';
-
-
-
-		/**
-		 * The class responsible for defining all task lists.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-db-api.php';
 
 
 		$this->loader = new Noobtask_Loader();
@@ -193,7 +191,20 @@ class Noobtask {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'wp_dashboard_setup', $plugin_admin,'add_dashboard_widgets' );
-		$this->loader->add_action( 'noobtask_cron_hook',  $plugin_admin, 'noobtask_cron_exec' );
+
+	}
+
+	/**
+	 * Register all of the hooks related to the cron job functionality
+	 * of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_cron_hooks() {
+
+		$cron_jobs = new CronJobs();
+		$this->loader->add_action( 'noobtask_cron_hook_hourly',  $cron_jobs, 'update_kartra' );
 
 	}
 
@@ -212,6 +223,23 @@ class Noobtask {
 		//$this->loader->add_action( 'admin_menu', $kartra_api, 'kartra_add_menu', 99 );
         $this->loader->add_action( 'wp_ajax_save_tag_ajax', $kartra_api, 'save_tag_ajax' );
     
+	}
+
+	/**
+	 * Register all of the hooks related to the cron job functionality
+	 * of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_default_tasks() {
+
+		$default_tasks = new \Default_Tasks( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action('wpmu_new_blog', $default_tasks, 'add_site_owner_to_options', 10, 2);
+		$this->loader->add_action('user_register', $default_tasks, 'noobtask_register_add_meta');
+        $this->loader->add_action('wp_login', $default_tasks, 'noobtask_first_user_login', 10, 2);
+		$this->loader->add_action('wp_login', $default_tasks, 'noobtask_add_last_login', 10, 2);
+
 	}
 
 
@@ -245,7 +273,7 @@ class Noobtask {
 
 		$plugin_public = new Noobtask_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles',11 );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles', 11);
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 	}

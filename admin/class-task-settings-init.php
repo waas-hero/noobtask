@@ -273,6 +273,7 @@ class Task_Settings_Init {
 
         $task_id = intval($_POST["task_id"]);
         $task_tag = sanitize_text_field($_POST["task_tag"]);
+        $task_list = sanitize_text_field($_POST["task_list"]);
 
         $tableName = "{$wpdb->prefix}noobtasks";
 
@@ -287,9 +288,11 @@ class Task_Settings_Init {
             ));
         } else {
             
+            //valid values are only subscribe_lead_to_list, assign_tag, and give_points_to_lead
             $current_user = wp_get_current_user();
             $return = Kartra_Api::postLeadAction( $current_user->user_email, $actions = [
                 'assign_tag' => $task_tag,
+                'subscribe_lead_to_list' => $task_list,
             ]);
             
             // No error. You can check updated to see how many rows were changed.

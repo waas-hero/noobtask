@@ -20,6 +20,7 @@
  * @subpackage Noobtask/includes
  * @author     J Hanlon <j@waashero.com>
  */
+
 class Noobtask_Activator {
 
 	/**
@@ -30,8 +31,8 @@ class Noobtask_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		if ( ! wp_next_scheduled( 'noobtask_cron_hook' ) ) {
-			wp_schedule_event( time(), 'hourly', 'noobtask_cron_hook' );
+		if ( ! wp_next_scheduled( 'noobtask_cron_hook_hourly' ) ) {
+			wp_schedule_event( time(), 'hourly', 'noobtask_cron_hook_hourly' );
 		}
 	}
 
@@ -42,7 +43,7 @@ class Noobtask_Activator {
 	
 		//* Create the noobtasks table
 		$task_table_name = $wpdb->prefix . 'noobtasks';
-		$task_sql = "CREATE TABLE $task_table_name (
+		$task_sql = "CREATE TABLE IF NOT EXISTS $task_table_name (
 			task_id INTEGER NOT NULL AUTO_INCREMENT,
 			task_name TEXT NOT NULL,
 			task_list TEXT NULL,
@@ -50,35 +51,30 @@ class Noobtask_Activator {
 			task_selector TEXT NULL,
 			task_completed boolean NULL,
 			task_tag TEXT NULL,
+			task_is_default TEXT NULL,
 			completed_at datetime NULL,
 			PRIMARY KEY (task_id)
 		) $charset_collate;";
 		dbDelta( $task_sql );
-
-		//* Create the noobtags tags table to use with Kartra
-		$tag_table_name = $wpdb->prefix . 'noobtask_tags';
-		$tag_sql = "CREATE TABLE $tag_table_name (
-			id INTEGER NOT NULL AUTO_INCREMENT,
-			tag_name TEXT NOT NULL,
-			tag_description TEXT NULL,
-			PRIMARY KEY (id)
-		) $charset_collate;";
-		dbDelta( $tag_sql );
 	
 	}
 
 	function preload_data() {
 		global $wpdb;
+		$tableName = $wpdb->prefix . 'noobtasks';
 		
-		$table_name = $wpdb->prefix . 'noobtasks';
+		$default_tasks = Default_Tasks::auto_tasks();
+
+		$result = $wpdb->get_results($wpdb->prepare( 
+            "SELECT * FROM $tableName WHERE task_is_default = %d",
+            true
+        ));
+		if(count($result) > 0){return;}
+
+		foreach($default_tasks as $task){
+			$wpdb->insert($tableName, $task);
+		}
 		
-		$wpdb->insert( 
-			$table_name, 
-			array( 
-				'name' => 'Set your theme', 
-				'type' => 'level_1', 
-			) 
-		);
 	}
 
 }

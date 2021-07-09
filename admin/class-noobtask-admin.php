@@ -63,18 +63,6 @@ class Noobtask_Admin {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Noobtask_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Noobtask_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/noobtask-admin.css', array(), $this->version, 'all' );
 
 	}
@@ -86,24 +74,8 @@ class Noobtask_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Noobtask_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Noobtask_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/noobtask-admin.js', array( 'jquery' ), $this->version, false );
 
-	}
-
-	public function noobtask_cron_exec(){
-		
 	}
 	
 	
@@ -125,10 +97,13 @@ class Noobtask_Admin {
 	 */
 	public function dashboard_widget_render() { 
 		$tasks = self::get_tasks();
+		// $job = new CronJobs;
+		// print_r($job->get_default_tasks_from_db());
 		?>
 		<div class="noobtask-list-container">
+			
 			<p class="noobtask-title"><?php echo strtoupper(__('Get Started')); ?></p>
-			<div class="noobtask-list" style="width:100%; display:flex; list-style-type: none;">
+			<div class="noobtask-list" style="width:100%; display:flex; flex-direction:column;list-style-type: none;">
 	
 				<?php foreach($tasks as $task){ ?>
 
@@ -146,12 +121,15 @@ class Noobtask_Admin {
 				<!-- Modal content -->
 				<div class="modal-content">
 					<div class="noobtask-modal-header">
-						<div class="noobtask-modal-title"></div>
-						<span id="noobtaskCloseBtn" class="noobtask-close">&times;</span>
+						<div class="noobtask-modal-header-left">
+							<span class="noobtask-modal-complete-icon dashicons dashicons-saved"></span>
+							<div class="noobtask-modal-title"></div>
+						</div>
+						<span id="noobtaskCloseBtn" class="noobtask-modal-close">&times;</span>
 					</div>
-					<p class="noobtask-message">You still need to complete this task.</p>
-					<a class="noobtask-modal-link"><?php echo __('Complete Task'); ?></a>
-				<button class="noobtask-complete-btn"><?php echo __('Mark Task As Complete'); ?></button>
+					<p class="noobtask-modal-message">You still need to complete this task.</p>
+					<a class="noobtask-modal-btn noobtask-modal-link"><?php echo __('Complete Task'); ?></a>
+				<button class="noobtask-modal-btn noobtask-complete-btn"><?php echo __('Mark Task As Complete'); ?></button>
 				</div>
 			</div>
 		</div>
@@ -170,7 +148,6 @@ class Noobtask_Admin {
 			), $atts );
 
 		$tasks = self::get_tasks();
-		
 		?>
 			
 		<div class="noobtask-list-container">
@@ -200,7 +177,7 @@ class Noobtask_Admin {
 						
 						<span id="noobtaskCloseBtn" class="noobtask-close">&times;</span>
 					</div>
-				<p class="noobtask-message">You still need to complete this task.</p>
+				<p class="noobtask-modal-message">You still need to complete this task.</p>
 				<a class="noobtask-modal-btn noobtask-modal-link"><?php echo __('Complete Task'); ?></a>
 				<button class="noobtask-modal-btn noobtask-complete-btn"><?php echo __('Mark Task As Complete'); ?></button>
 				</div>
@@ -220,6 +197,7 @@ class Noobtask_Admin {
 				jQuery(".noobtask-complete-btn").click(function () {
 					var taskID = jQuery(this).attr("data-id");
 					var taskTag = jQuery(this).attr("data-tag");
+					var taskList = jQuery(this).attr("data-list");
 					console.log(taskTag);
 
 					jQuery.ajax({
@@ -239,24 +217,30 @@ class Noobtask_Admin {
 				});
 				jQuery(".noobtask-item").click(function () {
 					var task = JSON.parse(jQuery(this).attr("data-task"));
-					var name = task.task_name;
-					
-					jQuery(".noobtask-modal-title").text(task.task_name);
-	
+					var modal = document.getElementById("noobtaskModal");
+
+					jQuery(modal).find(".noobtask-modal-title").text(task.task_name);
+					var completeBtn = jQuery(modal).find(".noobtask-complete-btn");
+					var modalLink = jQuery(modal).find(".noobtask-modal-link");
+
 					if(task.task_completed == 1){
-						jQuery(".noobtask-complete-btn").hide();
-						jQuery(".noobtask-message").text('Task Complete!');
+						jQuery(modal).find(".noobtask-modal-message").text('Task Complete!');
+						jQuery(modal).find(".noobtask-modal-complete-icon").show();
+						completeBtn.hide();
+						modalLink.hide();
 					} else {
-						jQuery(".noobtask-complete-btn").attr('data-id', task.task_id);
-						jQuery(".noobtask-complete-btn").attr('data-tag', task.task_tag);
-						jQuery(".noobtask-complete-btn").attr('data-list', task.task_list);
-					}
-					
-					//Add appropriate button
-					if(task.task_link){
-						jQuery(".noobtask-modal-link").attr('href', task.task_link+'?highlight='+task.task_selector);
-					} else {
-						jQuery(".noobtask-modal-link").hide();
+						completeBtn.show();
+						modalLink.show();
+						jQuery(modal).find(".noobtask-modal-message").text('Task NOT Complete!');
+						jQuery(modal).find(".noobtask-modal-complete-icon").hide();
+						completeBtn.attr('data-id', task.task_id);
+						completeBtn.attr('data-tag', task.task_tag);
+						completeBtn.attr('data-list', task.task_list);
+						if(task.task_link){
+							modalLink.attr('href', task.task_link+'?highlight='+task.task_selector);
+						} else {
+							modalLink.hide();
+						}
 					}
 					
 					modal.style.display = "flex";
@@ -282,7 +266,7 @@ class Noobtask_Admin {
     * @return mixed
     */
     public static function get_tasks() {        
-        return \Task_List::get_tasks();
+        return \Task_List::get_all_tasks();
     }
 
 }

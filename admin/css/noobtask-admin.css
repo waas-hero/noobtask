@@ -10,14 +10,14 @@
    padding: 5px 5px 5px 5px;
    border: solid 1px black;
    border-radius: 25px;
-   max-width: 100px;
+   max-width: 100%;
    text-align: center;
    margin-bottom: 5px;
-   height: 100px;
+   height: 70px;
    display: flex;
    justify-content: center;
    align-items: center;
-   width: 100px;
+   width: 100%;
    margin-right: 15px;
 }
 .noobtask-modal-header{
@@ -98,14 +98,15 @@
    cursor: pointer;
 }
 .noobtask-modal-link{
-   padding: 10px 15px;
    background: #2e3ad0;
    color: white;
+}
+.noobtask-modal-btn{
+   padding: 10px 15px;
    text-decoration: none;
    border-radius: 8px;
    margin-top: 20px;
    display: inline-block;
-
 }
 button.noobtask-item.noobtask-incomplete{
    background-color:#a1bba1 ;
@@ -118,4 +119,12 @@ button.noobtask-item.noobtask-completed{
 }
 button.noobtask-item.noobtask-completed:hover{
    background-color:#5e5d99 !important;
+}
+.noobtask-modal-header-left{
+   display:flex;
+}
+.noobtask-modal-complete-icon {
+   border: 1px solid white;
+   border-radius: 25px;
+   margin-right: 10px;
 }

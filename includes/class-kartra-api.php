@@ -118,8 +118,7 @@ class Kartra_Api {
             case "Success" :
                 return [
                     'status' => 200,
-                    'message' => $server_json->message,
-                    'lead' => $server_json->lead_details
+                    'data' => $server_json,
                 ];
         }
 
@@ -147,8 +146,7 @@ class Kartra_Api {
             case "Success" :
                 return [
                     'status' => 200,
-                    'message' => $server_json->message,
-                    'lead' => $server_json->lead_details
+                    'data' => $server_json,
                 ];
         }
 

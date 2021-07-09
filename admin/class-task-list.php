@@ -49,6 +49,14 @@ class Task_List extends WP_List_Table {
         return $result;
     }
 
+    public static function get_all_tasks() {
+
+        global $wpdb;
+        $sql = "SELECT * FROM {$wpdb->prefix}noobtasks";
+        return $wpdb->get_results( $sql, 'ARRAY_A' );
+        
+    }
+
     /**
     * Delete a task record.
     *
@@ -106,16 +114,20 @@ class Task_List extends WP_List_Table {
     */
     public function column_task_name( $item ) {
 
-        // create a nonce
-        $delete_nonce = wp_create_nonce( 'sp_delete_task' );
-        
         $title = '<strong>' . $item['task_name'] . '</strong>';
         
+        if($item['task_is_default']){
+            return $title;
+        }
+
+        // create a nonce
+        $delete_nonce = wp_create_nonce( 'sp_delete_task' );
         $actions = [
             'delete' => sprintf( '<a href="?page=%s&action=%s&task=%s&_wpnonce=%s">Delete</a>', esc_attr( $_REQUEST['page'] ), 'delete', absint( $item['task_id'] ), $delete_nonce )
         ];
         
         return $title . $this->row_actions( $actions, true );
+  
     }
 
     /**
@@ -174,8 +186,8 @@ class Task_List extends WP_List_Table {
             'task_name' => __( 'Name', 'sp' ),
             'task_link' => __( 'Link', 'sp' ),
             'task_selector' => __( 'Selector', 'sp' ),
-            'task_list' => __( 'Link', 'sp' ),
-            'task_tag' => __( 'Tag', 'sp' ),
+            'task_list' => __( 'Kartra List', 'sp' ),
+            'task_tag' => __( 'Kartra Tag', 'sp' ),
             'task_completed' => __( 'Status', 'sp' ),
         ];
         

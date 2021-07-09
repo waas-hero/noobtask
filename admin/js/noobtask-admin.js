@@ -5,17 +5,14 @@
 		CheckForHighlight();
 	});
 	
+	//highlightedElemclass has box shadow or border
 	function CheckForHighlight(){
 		let searchParams = new URLSearchParams(window.location.search)
 		if(searchParams.has('highlight')){
 			let param = searchParams.get('highlight')
 			$(param).addClass('highlightedElem');
 		}
-
-		//highlightedElemclass has box shadow or border
 	}
-
-	
 
 })( jQuery );
 
@@ -33,7 +30,7 @@ jQuery(document).ready(function($) {
 	jQuery(".noobtask-complete-btn").click(function () {
 		var taskID = jQuery(this).attr("data-id");
 		var taskTag = jQuery(this).attr("data-tag");
-		console.log(taskTag);
+		var taskList = jQuery(this).attr("data-list");
 
 		jQuery.ajax({
 			type: 'POST',
@@ -43,6 +40,7 @@ jQuery(document).ready(function($) {
 				'action' : 'complete_noobtask_ajax',
 				'task_id': taskID,
 				'task_tag': taskTag,
+				'task_list': taskList,
 			},
 			success: function(data){
 				console.log(data);
@@ -51,26 +49,34 @@ jQuery(document).ready(function($) {
 	});
 
 	jQuery(".noobtask-item").click(function () {
-
 		
 		var task = JSON.parse(jQuery(this).attr("data-task"));
-		jQuery(".noobtask-modal-title").text(task.task_name);
-		var completeBtn = jQuery(".noobtask-complete-btn");
-		var modalLink = jQuery(".noobtask-modal-link");
-		completeBtn.attr('data-id', task.task_id);
-		completeBtn.attr('data-tag', task.task_tag);
+		var modal = document.getElementById("noobtaskModal");
 
-		if(task.task_completed){
-			jQuery(".noobtask-message").text('Task Complete!');
+		jQuery(modal).find(".noobtask-modal-title").text(task.task_name);
+		var completeBtn = jQuery(modal).find(".noobtask-complete-btn");
+		var modalLink = jQuery(modal).find(".noobtask-modal-link");
+
+		if(task.task_completed == 1){
+			jQuery(modal).find(".noobtask-modal-message").text('Task Complete!');
+			jQuery(modal).find(".noobtask-modal-complete-icon").show();
 			completeBtn.hide();
-		} 
-
-		if(task.task_link){
-			modalLink.attr('href', task.task_link+'?highlight='+task.task_selector);
-		} else {
 			modalLink.hide();
+		} else {
+			completeBtn.show();
+			modalLink.show();
+			jQuery(modal).find(".noobtask-modal-message").text('Task NOT Complete!');
+			jQuery(modal).find(".noobtask-modal-complete-icon").hide();
+			completeBtn.attr('data-id', task.task_id);
+			completeBtn.attr('data-tag', task.task_tag);
+			completeBtn.attr('data-list', task.task_list);
+			if(task.task_link){
+				modalLink.attr('href', task.task_link+'?highlight='+task.task_selector);
+			} else {
+				modalLink.hide();
+			}
 		}
-		
+
 		modal.style.display = "flex";
 	});
 
@@ -81,7 +87,6 @@ jQuery(document).ready(function($) {
 
 	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
-		//console.log(event.target);
 		if (event.target == modal) {
 			modal.style.display = "none";
 		}

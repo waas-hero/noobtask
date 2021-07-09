@@ -43,6 +43,7 @@ define( 'NOOBTASK_VERSION', '1.0.0' );
  */
 function activate_noobtask() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-noobtask-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-default-tasks.php';
 	Noobtask_Activator::activate();
 	$activate = new Noobtask_Activator;
 	$activate->create_db_table();
