@@ -37,12 +37,17 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'NOOBTASK_VERSION', '1.0.0' );
 
+if(defined('SUBSITE_TYPE') != null){
+	//Define default subsite type for WaasHero Plugins
+	define('SUBSITE_TYPE', 'seller');
+}
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-noobtask-activator.php
  */
 function activate_noobtask() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-noobtask-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-default-tasks.php';
 	Noobtask_Activator::activate();
 	$activate = new Noobtask_Activator;
 	$activate->create_db_table();

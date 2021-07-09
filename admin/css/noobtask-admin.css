@@ -6,29 +6,26 @@
     box-shadow:0px 0px 10px blue;
     border:1px solid blue;
  }
- .noobtask-item{
+
+.noobtask-item{
    padding: 5px 5px 5px 5px;
-   border: solid 1px black;
-   border-radius: 25px;
-   max-width: 100px;
+   border: none;
+   border-radius: 7px;
+   max-width: 100%;
+   min-width: 100px;
    text-align: center;
-   margin-bottom: 5px;
-   height: 100px;
+   height: 60px;
    display: flex;
    justify-content: center;
    align-items: center;
-   width: 100px;
-   margin-right: 15px;
+   width: 100%;
+   margin-bottom:5px;
 }
-.noobtask-modal-header{
-   display:flex;
-   justify-content: space-between;
-}
+
 .noobtask-list{
    margin: 0;
    padding: 0;
    display:flex;
-   margin-right: 10px;
 }
 .noobtask-name{
    font-size:13px;
@@ -39,10 +36,13 @@
    margin-top:15px;
 }
 .task-open-btn{
-   height: 100px;
    width: 40px;
-   padding: 0;
-   border-radius: 15px;
+   padding: 0 7px;
+   border-radius: 5px;
+   margin-right: 15px;
+   border: 1px solid rgb(91, 91, 91);
+   background-color: transparent !important;
+   color: rgb(75, 75, 75) !important;
 }
 .noobtask-title{
    margin-bottom: 15px;
@@ -50,8 +50,19 @@
    background: #dedede;
    color: #565656;
 }
+
+.noobtask-modal-header{
+   display:flex;
+   justify-content: space-between;
+   align-items: baseline;
+   border-bottom: 1px solid #b5b5b5;
+   margin-bottom: 20px;
+}
+.noobtask-modal-title{
+   margin-left: 7px;
+}
 /* The Modal (background) */
-.modal {
+.noobtask-modal {
    display: none; /* Hidden by default */
    position: fixed; /* Stay in place */
    z-index: 1; /* Sit on top */
@@ -64,7 +75,7 @@
    background-color: rgb(0,0,0); /* Fallback color */
    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
-.modal-inner{
+.noobtask-modal-inner{
    width: 100%;
    display: flex;
    justify-content: center;
@@ -72,9 +83,9 @@
    height: 100vh;
 }
 /* Modal Content/Box */
-.modal-content {
-   background-color: #388251;
-   color: white;
+.noobtask-modal-content {
+   background-color: #dbe2de;
+   color: rgb(58, 58, 58);
    border-radius: 8px;
    margin: 15px; /* 15% from the top and centered */
    padding: 20px;
@@ -84,38 +95,53 @@
 }
 
 /* The Close Button */
-.close {
+.noobtask-close {
    color: #aaa;
    float: right;
    font-size: 28px;
    font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.noobtask-close:hover,
+.noobtask-close:focus {
    color: black;
    text-decoration: none;
    cursor: pointer;
 }
-.noobtask-modal-link{
+.noobtask-modal-btn{
    padding: 10px 15px;
-   background: #2e3ad0;
-   color: white;
    text-decoration: none;
    border-radius: 8px;
    margin-top: 20px;
    display: inline-block;
-
+}
+.noobtask-modal-link{
+   background: #2e3ad0;
+   color: white;
 }
 button.noobtask-item.noobtask-incomplete{
-   background-color:#a1bba1 ;
+   background-color:#cfd0da !important;
+   color:#565656 !important;
 }
 button.noobtask-item.noobtask-incomplete:hover{
-   background-color:#5d995d !important;
+   background-color:#6980ba !important;
+   color:white !important;
 }
 button.noobtask-item.noobtask-completed{
-   background-color:#797fad ;
+   background-color: #d8d8d8 !important;
+   color:#565656 !important;
+   opacity: .6;
 }
 button.noobtask-item.noobtask-completed:hover{
-   background-color:#5e5d99 !important;
+   background-color: #d8d8d8 !important;
+   color:#565656 !important;
+   opacity: .6;
+}
+.noobtask-text{
+   display: flex;
+}
+.noobtask-modal-complete-icon {
+   border: 1px solid white;
+   border-radius: 25px;
+   margin-right: 10px;
 }
