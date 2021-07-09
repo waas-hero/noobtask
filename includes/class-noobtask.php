@@ -77,11 +77,10 @@ class Noobtask {
 		}
 		$this->plugin_name = 'noobtask';
 
-		register_activation_hook( __FILE__, 'create_db_table' );
-
 		$this->load_dependencies();
 		$this->define_kartra_api_hooks();
 		$this->define_default_tasks();
+		$this->define_cron_hooks();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();

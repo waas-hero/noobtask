@@ -2,20 +2,22 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
- .noobtask-item{
+.noobtask-item{
     padding: 5px 5px 5px 5px;
-    border: solid 1px black;
-    border-radius: 25px;
-    max-width: 100px;
+    border: none;
+    border-radius: 7px;
+    max-width: 100%;
+    min-width: 100px;
     text-align: center;
-    margin-bottom: 5px;
-    height: 100px;
+    height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
-    margin-left: 15px;
+    width: 100%;
+    margin-right:5px;
+    height: 100px;
 }
+
 .noobtask-list-container{
     position: fixed;
     right: 0;
@@ -23,6 +25,7 @@
     background: white;
     padding: 20px 0 20px 20px;
     border-radius: 15px 0 0 15px;
+    display: flex;
 }
 .noobtask-list{
     margin: 0;
@@ -39,14 +42,16 @@
     margin-top:15px;
 }
 .task-open-btn{
-    height: 100px;
     width: 40px;
-    padding: 0;
-    border-radius: 15px;
+    padding: 0 7px;
+    border-radius: 5px;
+    margin-right: 15px;
+    border: 1px solid rgb(91, 91, 91);
+    background-color: transparent !important;
+    color: rgb(75, 75, 75) !important;
 }
 .noobtask-title{
     margin-bottom: 15px;
-    margin-left: 15px;
     padding: 5px 10px;
     background: #dedede;
     color: #565656;
@@ -121,8 +126,23 @@
     color: white;
 }
 button.noobtask-item.noobtask-incomplete{
-    background-color:#a1bba1 !important;
-}
+    background-color:#cfd0da !important;
+    color:#565656 !important;
+ }
+ button.noobtask-item.noobtask-incomplete:hover{
+    background-color:#6980ba !important;
+    color:white !important;
+ }
+ button.noobtask-item.noobtask-completed{
+    background-color: #d8d8d8 !important;
+    color:#565656 !important;
+    opacity: .6;
+ }
+ button.noobtask-item.noobtask-completed:hover{
+    background-color: #d8d8d8 !important;
+    color:#565656 !important;
+    opacity: .6;
+ }
 .noobtask-text{
     display: flex;
 }

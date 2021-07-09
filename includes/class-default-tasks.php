@@ -12,7 +12,7 @@ class Default_Tasks {
                 'task_selector' => '',
                 'task_completed' => null,
                 'task_tag' => 'Setup Seller Site',
-                'task_list' => 'Setup Seller Site',
+                //'task_list' => 'Setup Seller Site',
                 'task_is_default' => true,
             ],
             'setup_buyer_site' => [
@@ -21,7 +21,7 @@ class Default_Tasks {
                 'task_selector' => '',
                 'task_completed' => null,
                 'task_tag' => 'Setup Buyer Site',
-                'task_list' => 'Setup Buyer Site',
+                //'task_list' => 'Setup Buyer Site',
                 'task_is_default' => true,
             ],
             'setup_investor_site' => [
@@ -30,7 +30,7 @@ class Default_Tasks {
                 'task_selector' => '',
                 'task_completed' => null,
                 'task_tag' => 'Setup Investor Site',
-                'task_list' => 'Setup Investor Site',
+                //'task_list' => 'Setup Investor Site',
                 'task_is_default' => true,
             ],
             'first_login_seller_site' => [
@@ -66,7 +66,7 @@ class Default_Tasks {
                 'task_selector' => '',
                 'task_completed' => null,
                 'task_tag' => 'Renew Investor Site',
-                'task_list' => 'Renew Investor Site',
+                //'task_list' => 'Renew Investor Site',
                 'task_is_default' => true,
             ],
             'renew_investor_site' => [
@@ -75,7 +75,7 @@ class Default_Tasks {
                 'task_selector' => '',
                 'task_completed' => null,
                 'task_tag' => 'Renew Investor Site',
-                'task_list' => 'Renew Investor Site',
+                //'task_list' => 'Renew Investor Site',
                 'task_is_default' => true,
             ],
             'renew_plan' => [
@@ -84,7 +84,7 @@ class Default_Tasks {
                 'task_selector' => '',
                 'task_completed' => null,
                 'task_tag' => 'Renew Plan',
-                'task_list' => 'Renew Plan',
+                //'task_list' => 'Renew Plan',
                 'task_is_default' => true,
             ],
             'renew_30_days' => [
@@ -93,7 +93,7 @@ class Default_Tasks {
                 'task_selector' => '',
                 'task_completed' => null,
                 'task_tag' => 'Renew 30 Days',
-                'task_list' => 'Renew 30 Days',
+                //'task_list' => 'Renew 30 Days',
                 'task_is_default' => true,
             ],
             'login_after_setup' => [
@@ -135,7 +135,7 @@ class Default_Tasks {
             $tableName = "{$wpdb->prefix}noobtasks";
 
             //Constant MUST be defined in wp-config.php or elsewhere, Valid values are buyer, seller, investor
-            switch (SUBSITE_TYPE) {
+            switch (strtolower(SUBSITE_TYPE)) {
                 case 'buyer':
                     $return = WaasHero\Kartra_Api::postLeadAction( $user->user_email, $actions = [
                         'assign_tag' => 'Buyer Site First Login',

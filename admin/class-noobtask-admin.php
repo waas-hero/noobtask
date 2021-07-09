@@ -99,6 +99,7 @@ class Noobtask_Admin {
 		$tasks = self::get_tasks();
 		// $job = new CronJobs;
 		// print_r($job->get_default_tasks_from_db());
+		//echo SUBSITE_TYPE;
 		?>
 		<div class="noobtask-list-container">
 			
@@ -116,19 +117,20 @@ class Noobtask_Admin {
 		</div>
 
 		<!-- The Noobtask Modal -->
-		<div id="noobtaskModal" class="modal" style="">
-			<div class="modal-inner" >
+		<div id="noobtaskModal" class="noobtask-modal" style="">
+			<div class="noobtask-modal-inner" >
 				<!-- Modal content -->
-				<div class="modal-content">
+				<div class="noobtask-modal-content">
 					<div class="noobtask-modal-header">
-						<div class="noobtask-modal-header-left">
-							<span class="noobtask-modal-complete-icon dashicons dashicons-saved"></span>
-							<div class="noobtask-modal-title"></div>
-						</div>
-						<span id="noobtaskCloseBtn" class="noobtask-modal-close">&times;</span>
+						<span class="noobtask-text">
+							<span class="">Task: </span>
+							<span class="noobtask-modal-title"></span>
+						</span>
+						
+						<span id="noobtaskCloseBtn" class="noobtask-close">&times;</span>
 					</div>
-					<p class="noobtask-modal-message">You still need to complete this task.</p>
-					<a class="noobtask-modal-btn noobtask-modal-link"><?php echo __('Complete Task'); ?></a>
+				<p class="noobtask-modal-message">You still need to complete this task.</p>
+				<a class="noobtask-modal-btn noobtask-modal-link"><?php echo __('Complete Task'); ?></a>
 				<button class="noobtask-modal-btn noobtask-complete-btn"><?php echo __('Mark Task As Complete'); ?></button>
 				</div>
 			</div>
@@ -150,18 +152,21 @@ class Noobtask_Admin {
 		$tasks = self::get_tasks();
 		?>
 			
-		<div class="noobtask-list-container">
+		<div class="noobtask-list-container <?php echo $a['classes']; ?>">
 		
+			<button class="task-open-btn"><</button>
+			<div class="">
 			<p class="noobtask-title"><?php echo strtoupper(__('Get Started')); ?></p>
-			<div class="noobtask-list<?php echo $a['classes']; ?>" style="width:100%; list-style-type: none;<?php echo $a['style']; ?>">
-				<button class="task-open-btn"><</button>
+			<div class="noobtask-list">
+				
 				<?php foreach($tasks as $task){ ?>
 
 					<button data-task='<?php echo json_encode($task); ?>' class="noobtask-item <?php if($task['task_completed']){echo 'noobtask-completed';}else{echo 'noobtask-incomplete';} ?>">
 						<p id="noobtask-<?php echo $task['task_id']; ?>" class="noobtask-name"><?php echo strtoupper($task['task_name']); ?></p>
 					</button>
 			
-			<?php } ?>
+				<?php } ?>
+				</div>
 			</div>
 		</div>
 		<!-- The Modal -->
