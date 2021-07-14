@@ -143,6 +143,7 @@ class Task_List extends WP_List_Table {
             case 'task_name':
                 return '<p style="font-size:15px;"><b>'.$item[ $column_name ]."</b></p>";
 
+            case 'task_desc':
             case 'task_link':
             case 'task_selector':
 
@@ -184,6 +185,7 @@ class Task_List extends WP_List_Table {
         $columns = [
             'cb' => '<input type="checkbox" />',
             'task_name' => __( 'Name', 'sp' ),
+            'task_desc' => __( 'Description', 'sp' ),
             'task_link' => __( 'Link', 'sp' ),
             'task_selector' => __( 'Selector', 'sp' ),
             'task_list' => __( 'Kartra List', 'sp' ),
