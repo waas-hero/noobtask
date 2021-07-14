@@ -219,7 +219,6 @@ class Noobtask {
 		$kartra_api = new Kartra_Api( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_init', $kartra_api, 'kartra_settings_init' );
-		//$this->loader->add_action( 'admin_menu', $kartra_api, 'kartra_add_menu', 99 );
         $this->loader->add_action( 'wp_ajax_save_tag_ajax', $kartra_api, 'save_tag_ajax' );
     
 	}
@@ -237,7 +236,6 @@ class Noobtask {
 		$this->loader->add_action('wpmu_new_blog', $default_tasks, 'add_site_owner_to_options', 10, 2);
 		$this->loader->add_action('user_register', $default_tasks, 'noobtask_register_add_meta');
         $this->loader->add_action('wp_login', $default_tasks, 'noobtask_first_user_login', 10, 2);
-		$this->loader->add_action('wp_login', $default_tasks, 'noobtask_add_last_login', 10, 2);
 
 	}
 

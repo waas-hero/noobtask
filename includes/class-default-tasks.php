@@ -126,18 +126,15 @@ class Default_Tasks {
         add_site_option( 'site_owner_'.$blog_id, $user_id );
     }   
 
-    //add _new_user meta to new users at registration
+    //Adds _new_user meta to new users at registration
     function noobtask_register_add_meta($user_id) { 
         add_user_meta($user_id, '_new_user', '1');
     }
 
-    //add last_login time to users meta
-    function noobtask_add_last_login($user_login, $user){
-        update_user_meta($user->ID, 'last_login', time());
-    }
-
-    //check value at user login, and update kartra with Tag and List
+    //Checks value at user login, and updates Kartra with Tag and/or List
     function noobtask_first_user_login($user_login, $user) {
+
+        update_user_meta($user->ID, 'last_login', time());
 
         $new_user = get_user_meta($user->ID, '_new_user', true);
         if ($new_user) {
@@ -152,6 +149,7 @@ class Default_Tasks {
                         'assign_tag' => 'Buyer Site First Login',
                         //'subscribe_lead_to_list' => 'Login After Setup',
                     ]);
+                    //TODO:Check for error and update accordingly. Store error in db to display to user?
                     $updated = $wpdb->update( $tableName, ['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")], [ 'task_tag' => 'Buyer Site First Login' ] );
                     break;
                 case 'seller':
@@ -172,10 +170,12 @@ class Default_Tasks {
             
 
             update_user_meta($user->ID, '_new_user', $return);
+
             $return = WaasHero\Kartra_Api::postLeadAction( $user->user_email, $actions = [
                 'assign_tag' => 'Login After Setup',
-                //'subscribe_lead_to_list' => 'Login After Setup',
             ]);
+
+            //TODO:create our own api class for these
             $updated = $wpdb->update( $tableName, ['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")], [ 'task_name' => 'Login After Setup' ] );
     
             if ( false === $updated ) {

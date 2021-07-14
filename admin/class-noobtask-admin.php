@@ -65,6 +65,10 @@ class Noobtask_Admin {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/noobtask-admin.css', array(), $this->version, 'all' );
 
+		wp_register_style( 'driver-js-css', plugin_dir_url( __FILE__ ) . 'css/driver.min.css', array(), $this->version, false );
+
+		wp_enqueue_style( 'driver-js-css' );
+
 	}
 
 	/**
@@ -76,6 +80,15 @@ class Noobtask_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/noobtask-admin.js', array( 'jquery' ), $this->version, false );
 
+		wp_register_script( 'driver-js', plugin_dir_url( __FILE__ ) . 'js/driver.min.js', array( 'jquery' ), $this->version, false );
+
+		wp_localize_script( 'driver-js', 'noobTasks', self::get_tasks() );
+
+		wp_enqueue_script( 'driver-js' );
+
+		wp_register_script( 'noobtask-tour', plugin_dir_url( __FILE__ ) . 'js/noobtask-tour.js', array( 'driver-js' ), $this->version, false );
+
+		wp_enqueue_script( 'noobtask-tour' );
 	}
 	
 	
@@ -99,7 +112,7 @@ class Noobtask_Admin {
 		$tasks = self::get_tasks();
 		// $job = new CronJobs;
 		// print_r($job->get_default_tasks_from_db());
-		//echo SUBSITE_TYPE;
+		echo 'Site Type: '.SUBSITE_TYPE;
 		?>
 		<div class="noobtask-list-container">
 			
