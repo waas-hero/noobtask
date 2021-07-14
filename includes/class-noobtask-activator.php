@@ -43,9 +43,10 @@ class Noobtask_Activator {
 	
 		//* Create the noobtasks table
 		$task_table_name = $wpdb->prefix . 'noobtasks';
-		$task_sql = "CREATE TABLE IF NOT EXISTS $task_table_name (
+		$task_sql = "CREATE TABLE  $task_table_name (
 			task_id INTEGER NOT NULL AUTO_INCREMENT,
 			task_name TEXT NOT NULL,
+			task_desc LONGTEXT NULL,
 			task_list TEXT NULL,
 			task_link TEXT NULL,
 			task_selector TEXT NULL,

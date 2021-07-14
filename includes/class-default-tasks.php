@@ -8,6 +8,7 @@ class Default_Tasks {
         return [
             'setup_seller_site' => [
                 'task_name' => 'Setup Seller Site',
+                'task_desc' => 'Task description goes here.',
                 'task_link' => '',
                 'task_selector' => '',
                 'task_completed' => null,
@@ -17,6 +18,7 @@ class Default_Tasks {
             ],
             'setup_buyer_site' => [
                 'task_name' => 'Setup Buyer Site',
+                'task_desc' => 'Task description goes here.',
                 'task_link' => '',
                 'task_selector' => '',
                 'task_completed' => null,
@@ -26,6 +28,7 @@ class Default_Tasks {
             ],
             'setup_investor_site' => [
                 'task_name' => 'Setup Investor Site',
+                'task_desc' => 'Task description goes here.',
                 'task_link' => '',
                 'task_selector' => '',
                 'task_completed' => null,
@@ -35,6 +38,7 @@ class Default_Tasks {
             ],
             'first_login_seller_site' => [
                 'task_name' => 'First Login (seller site)',
+                'task_desc' => 'Task description goes here.',
                 'task_link' => '',
                 'task_selector' => '',
                 'task_completed' => null,
@@ -44,6 +48,7 @@ class Default_Tasks {
             ],
             'first_login_buyer_site' => [
                 'task_name' => 'First Login (buyer site)',
+                'task_desc' => 'Task description goes here.',
                 'task_link' => '',
                 'task_selector' => '',
                 'task_completed' => null,
@@ -53,6 +58,7 @@ class Default_Tasks {
             ],
             'first_login_investor_site' => [
                 'task_name' => 'First Login (investor site)',
+                'task_desc' => 'Task description goes here.',
                 'task_link' => '',
                 'task_selector' => '',
                 'task_completed' => null,
@@ -62,6 +68,7 @@ class Default_Tasks {
             ],
             'renew_investor_site' => [
                 'task_name' => 'Renew Investor Site',
+                'task_desc' => 'Task description goes here.',
                 'task_link' => '',
                 'task_selector' => '',
                 'task_completed' => null,
@@ -71,6 +78,7 @@ class Default_Tasks {
             ],
             'renew_investor_site' => [
                 'task_name' => 'Renew Investor Site',
+                'task_desc' => 'Task description goes here.',
                 'task_link' => '',
                 'task_selector' => '',
                 'task_completed' => null,
@@ -80,6 +88,7 @@ class Default_Tasks {
             ],
             'renew_plan' => [
                 'task_name' => 'Renew Plan',
+                'task_desc' => 'Task description goes here.',
                 'task_link' => '',
                 'task_selector' => '',
                 'task_completed' => null,
@@ -89,6 +98,7 @@ class Default_Tasks {
             ],
             'renew_30_days' => [
                 'task_name' => 'Renew 30 Days',
+                'task_desc' => 'Task description goes here.',
                 'task_link' => '',
                 'task_selector' => '',
                 'task_completed' => null,
@@ -98,6 +108,7 @@ class Default_Tasks {
             ],
             'login_after_setup' => [
                 'task_name' => 'Login After Setup',
+                'task_desc' => 'Task description goes here.',
                 'task_link' => '',
                 'task_selector' => '',
                 'task_completed' => null,
