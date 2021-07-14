@@ -37,9 +37,18 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'NOOBTASK_VERSION', '1.0.0' );
 
-if(defined('SUBSITE_TYPE') != null){
+if(!defined('SUBSITE_TYPE')){
 	//Define default subsite type for WaasHero Plugins
 	define('SUBSITE_TYPE', 'seller');
+}
+
+if(!defined('KARTRA_API_KEY')){
+	//Define default subsite type for WaasHero Plugins
+	define('KARTRA_API_KEY', '');
+}
+if(!defined('KARTRA_API_PASS')){
+	//Define default subsite type for WaasHero Plugins
+	define('KARTRA_API_PASS', '');
 }
 /**
  * The code that runs during plugin activation.

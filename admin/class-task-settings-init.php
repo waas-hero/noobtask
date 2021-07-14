@@ -29,208 +29,30 @@ class Task_Settings_Init {
     // task WP_List_Table object
     public $tasks_obj;
     public $tags_object;
-
-    function noobtask_print_cron() {
-		echo '<pre>'; print_r( _get_cron_array() ); echo '</pre>';
-	}
-
-    /**
-     * @internal never define functions inside callbacks.
-     * these functions could be run multiple times; this would result in a fatal error.
-     */
     
     /**
-     * custom option and settings
+     * custom settings objects
      */
     function noobtask_settings_init() {
 
         $this->tasks_obj = new \Task_List();
         $this->kartra_obj = new Kartra_Api();
 
-        // Register a new setting for "noobtask" page.
-        register_setting( 'noobtask', 'noobtask_options' );
-    
-        // Register a new section in the "noobtask" page.
-        add_settings_section(
-            'noobtask_section_developers',
-            __( 'Custom Completion List for New Users', 'noobtask' ), [$this, 'noobtask_section_developers_callback'],
-            'noobtask'
-        );
-    
-        // Register a new field in the "noobtask_section_developers" section, inside the "noobtask" page.
-        // add_settings_field(
-        //     'noobtask_field_pill', // As of WP 4.6 this value is used only internally.
-        //                             // Use $args' label_for to populate the id inside the callback.
-        //         __( 'Pill', 'noobtask' ),
-        //     [$this, 'noobtask_field_pill_cb'],
-        //     'noobtask',
-        //     'noobtask_section_developers',
-        //     array(
-        //         'label_for'         => 'noobtask_field_pill',
-        //         'class'             => 'noobtask_row',
-        //         'noobtask_custom_data' => 'custom',
-        //     )
-        // );
-
-        // Register a new field in the "noobtask_section_developers" section, inside the "noobtask" page.
-        add_settings_field(
-            'noobtask_field_name', // As of WP 4.6 this value is used only internally.
-                                    // Use $args' label_for to populate the id inside the callback.
-                __( 'Task Name', 'noobtask' ),
-            [$this, 'noobtask_field_name_cb'],
-            'noobtask',
-            'noobtask_section_developers',
-            array(
-                'label_for'         => 'noobtask_field_name',
-                'class'             => 'noobtask_row',
-                'noobtask_custom_data' => 'custom',
-            )
-        );
-
-        add_settings_field(
-            'noobtask_field_type', // As of WP 4.6 this value is used only internally.
-                                    // Use $args' label_for to populate the id inside the callback.
-                __( 'Type', 'noobtask' ),
-            [$this, 'noobtask_field_type_cb'],
-            'noobtask',
-            'noobtask_section_developers',
-            array(
-                'label_for'         => 'noobtask_field_type',
-                'class'             => 'noobtask_row',
-                'noobtask_custom_data' => 'custom',
-            )
-        );
-
-        add_settings_field(
-            'noobtask_field_type', // As of WP 4.6 this value is used only internally.
-                                    // Use $args' label_for to populate the id inside the callback.
-                __( 'Type', 'noobtask' ),
-            [$this, 'noobtask_field_type_cb'],
-            'noobtask',
-            'noobtask_section_developers',
-            array(
-                'label_for'         => 'noobtask_field_type',
-                'class'             => 'noobtask_row',
-                'noobtask_custom_data' => 'custom',
-            )
-        );
-
-        // Register a new section in the "noobtask" page.
-        add_settings_section(
-            'noobtask_section_tasktable',
-            __( 'Available Tasks', 'noobtask' ), [$this, 'noobtask_section_tasktable_callback'],
-            'noobtask'
-        );
     }
     
-    
-    
     /**
-     * Developers section callback function.
-     *
-     * @param array $args  The settings array, defining title, id, callback.
-     */
-    function noobtask_section_developers_callback( $args ) { ?>
-        
-        <p id="<?php echo esc_attr( $args['id'] ); ?>">
-            <?php esc_html_e( 'Customize the tasks your new users should complete.', 'noobtask' ); ?>
-        </p>
-        
-    <?php }
-
-    /**
-     * Developers section callback function.
-     *
-     * @param array $args  The settings array, defining title, id, callback.
-     */
-    function noobtask_section_tasktable_callback( $args ) { ?>
-        
-        <define_syslog_variables id="<?php echo esc_attr( $args['id'] );?>">
-            Table here <?php  print_r( get_option('noobtask_options') ); ?>
-        </div>
-        
-    <?php }
-    
-
-    /**
-     * Name field callback function.
-     *
-     * WordPress has magic interaction with the following keys: label_for, class.
-     * - the "label_for" key value is used for the "for" attribute of the <label>.
-     * - the "class" key value is used for the "class" attribute of the <tr> containing the field.
-     * Note: you can add custom key value pairs to be used inside your callbacks.
-     *
-     * @param array $args
-     */
-    function noobtask_field_name_cb( $args ) {
-        // Get the value of the setting we've registered with register_setting()
-        $options = get_option( 'noobtask_options' ); ?>
-
-        <input type="text" id="<?php echo esc_attr( $args['label_for'] ); ?>"
-                data-custom="<?php echo esc_attr( $args['noobtask_custom_data'] ); ?>"
-                name="noobtask_options[<?php echo esc_attr( $args['label_for'] ); ?>]" 
-                style="width:100%; max-width:300px;"
-        />
-           
-    <?php }
-
-
-    /**
-     * Type field callback function.
-     *
-     * WordPress has magic interaction with the following keys: label_for, class.
-     * - the "label_for" key value is used for the "for" attribute of the <label>.
-     * - the "class" key value is used for the "class" attribute of the <tr> containing the field.
-     * Note: you can add custom key value pairs to be used inside your callbacks.
-     *
-     * @param array $args
-     */
-    function noobtask_field_type_cb( $args ) {
-        // Get the value of the setting we've registered with register_setting()
-        $options = get_option( 'noobtask_options' ); ?>
-
-        <select id="<?php echo esc_attr( $args['label_for'] ); ?>"
-                data-custom="<?php echo esc_attr( $args['noobtask_custom_data'] ); ?>"
-                name="noobtask_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
-                style="width:100%; max-width:300px;">
-            <option value="level_1" <?php echo isset( $options[ $args['label_for'] ] ) ? ( selected( $options[ $args['label_for'] ], 'red', false ) ) : ( '' ); ?>>
-                <?php esc_html_e( 'Level 1', 'noobtask' ); ?>
-            </option>
-            <option value="level_2" <?php echo isset( $options[ $args['label_for'] ] ) ? ( selected( $options[ $args['label_for'] ], 'blue', false ) ) : ( '' ); ?>>
-                <?php esc_html_e( 'Level 2', 'noobtask' ); ?>
-            </option>
-            <option value="level_3" <?php echo isset( $options[ $args['label_for'] ] ) ? ( selected( $options[ $args['label_for'] ], 'blue', false ) ) : ( '' ); ?>>
-                <?php esc_html_e( 'Level 3', 'noobtask' ); ?>
-            </option>
-        </select>
-        
-    <?php }
-    
-    /**
-     * Add the top level menu page.
+     * Add a top level menu page.
      */
     function noobtask_options_page() {
         add_menu_page(
-            'Noob Tasks',
-            'Noob Tasks',
+            'Starter Tasks',
+            'Starter Tasks',
             'manage_options',
             'noobtask',
             [$this, 'noobtask_options_page_html']
         );
-        add_submenu_page(
-            'noobtask',
-            'Tasks',
-            'Tasks',
-            'manage_options',
-            'noobtask',
-            [$this, 'noobtask_options_page_html']
-        );
-
-        
-
     }
     
-        
     function save_noobtask_ajax(){
         global $wpdb;
 
@@ -316,15 +138,9 @@ class Task_Settings_Init {
             return;
         }
         
-        // check if the user have submitted the settings
-        // WordPress will add the "settings-updated" $_GET parameter to the url
-        if ( isset( $_GET['settings-updated'] ) ) {
-            // add settings saved message with the class of "updated"
-            add_settings_error( 'noobtask_messages', 'noobtask_message', __( 'Settings Saved', 'noobtask' ), 'updated' );
+        if(!KARTRA_API_KEY){
+            $noApiKeyError = '<b>Don\'t forget to add the Kartra_API_KEY and Kartra_API_PASS constants to wp-config.php.<br/> The key and password values can be found in your Kartra Account.</b>';
         }
-    
-        // show error/update messages
-        settings_errors( 'noobtask_messages' );
         ?>
         <div class="wrap">
 
@@ -334,11 +150,13 @@ class Task_Settings_Init {
                 box-shadow: none;
             }
         </style>
-        <h1 class=""><?php echo esc_html( 'Noob Tasks' ); ?></h1>
+        <h1 class=""><?php echo get_admin_page_title(); ?></h1>
             
         <div class="" style="background:white; padding:20px; border-radius:8px; margin-top:20px;">
         
-       
+        <?php if($noApiKeyError){ 
+            echo "<div class=''>".__($noApiKeyError)."</div>";
+         } ?>
 
         <form method="POST" action="" id="task_form">
             <table class="form-table" role="presentation">
@@ -374,10 +192,13 @@ class Task_Settings_Init {
                         <td>
                         <?php $tags = $this->kartra_obj->getKartraTags(); ?>
                             <select id="task_tag" name="task_tag" style="width:100%; max-width:300px;">
-                                <?php if(!$tags['account_tags']){ echo '<option value="null">'.__('No Tags Found').'</option>'; } else {
-                                    foreach($tags['account_tags'] as $tag){ ?>
+                                <?php if( isset($tags['account_tags']) ){ ?>
+                                    <option value="null"><?php echo __('No Tag'); ?></option>
+                                <?php foreach($tags['account_tags'] as $tag){?>
                                     <option value="<?php echo $tag; ?>"><?php echo $tag; ?></option>
-                                <?php } } ?>
+                                <?php } } else { ?>
+                                    <option value="null"><?php echo __('No Tags Found'); ?></option>
+                                <?php } ?>
                             </select>
                         </td>
                     </tr> 
@@ -388,11 +209,13 @@ class Task_Settings_Init {
                         <td>
                         <?php $lists = $this->kartra_obj->getKartraLists(); ?>
                             <select id="task_list" name="task_list" style="width:100%; max-width:300px;">
-                                <?php if(!$lists['account_lists']){ echo '<option value="null">'.__('No Lists Found').'</option>'; } else {
-                                    foreach($lists['account_lists'] as $list){ 
-                                    ?>
-                                    <option value="<?php echo $list; ?>"><?php echo $list; ?></option>
-                                <?php } } ?>
+                                <?php if( isset($tags['account_lists']) ){ ?>
+                                    <option value="null"><?php echo __('No List'); ?></option>
+                                <?php foreach($tags['account_lists'] as $tag){?>
+                                    <option value="<?php echo $tag; ?>"><?php echo $tag; ?></option>
+                                <?php } } else { ?>
+                                    <option value="null"><?php echo __('No Lists Found'); ?></option>
+                                <?php } ?>
                             </select>
                         </td>
                     </tr> 
@@ -421,11 +244,6 @@ class Task_Settings_Init {
                     },
                     success: function(data){
                         if (data.res == true){
-                            // var taskTableLastRow = jQuery('#the-list');
-                            // var newId = taskTableLastRow.value + 1;
-                            // taskTableLastRow.append(
-                            // '<tr><th scope="row" class="check-column"><input type="checkbox" name="bulk-delete[]" value="'+newId+'"></th><td class="task_name column-task_name has-row-actions column-primary" data-colname="Name"><p style="font-size:15px;"><b>'+data.data.task_name+'</b></p><button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button></td><td class="task_list column-task_list" data-colname="Type"><p>'+data.data.task_list+'</p></td><td class="task_tag column-task_tag" data-colname="Tag"><i>'+data.data.task_tag+'</i></td><td class="task_completed column-task_completed" data-colname="Status"><p class="text-red" style="color:red;"><i>--</i></p></td></tr>'
-                            // );
                             location.href = '<?php echo $redirect_url; ?>';
                         }else{
                             alert(data.message);    // fail
