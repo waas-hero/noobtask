@@ -139,7 +139,7 @@ class Task_Settings_Init {
         }
         
         if(!KARTRA_API_KEY){
-            $noApiKeyError = '<b>Don\'t forget to add the Kartra_API_KEY and Kartra_API_PASS constants to wp-config.php.<br/> The key and password values can be found in your Kartra Account.</b>';
+            $noApiKeyError = '<b>Don\'t forget to add the Kartra_API_KEY and Kartra_API_PASS constants to wp-config.php.<br/> The key and password values can be found in your Kartra Account using the following link. <a target="_blank" href="https://app.kartra.com/integrations/api/key">KARTRA API KEY</a></b>';
         }
         ?>
         <div class="wrap">
@@ -154,8 +154,8 @@ class Task_Settings_Init {
             
         <div class="" style="background:white; padding:20px; border-radius:8px; margin-top:20px;">
         
-        <?php if($noApiKeyError){ 
-            echo "<div class=''>".__($noApiKeyError)."</div>";
+        <?php if( isset($noApiKeyError) ){ 
+            echo "<div class='text-danger' style='color:red;'>".__($noApiKeyError)."</div>";
          } ?>
 
         <form method="POST" action="" id="task_form">
@@ -193,7 +193,7 @@ class Task_Settings_Init {
                         <?php $tags = $this->kartra_obj->getKartraTags(); ?>
                             <select id="task_tag" name="task_tag" style="width:100%; max-width:300px;">
                                 <?php if( isset($tags['account_tags']) ){ ?>
-                                    <option value="null"><?php echo __('No Tag'); ?></option>
+                                    <option value="null"><?php echo __('Don\'t Use A Tag'); ?></option>
                                 <?php foreach($tags['account_tags'] as $tag){?>
                                     <option value="<?php echo $tag; ?>"><?php echo $tag; ?></option>
                                 <?php } } else { ?>
@@ -209,10 +209,10 @@ class Task_Settings_Init {
                         <td>
                         <?php $lists = $this->kartra_obj->getKartraLists(); ?>
                             <select id="task_list" name="task_list" style="width:100%; max-width:300px;">
-                                <?php if( isset($tags['account_lists']) ){ ?>
-                                    <option value="null"><?php echo __('No List'); ?></option>
-                                <?php foreach($tags['account_lists'] as $tag){?>
-                                    <option value="<?php echo $tag; ?>"><?php echo $tag; ?></option>
+                                <?php if( isset($lists['account_lists']) ){ ?>
+                                    <option value="null"><?php echo __('Don\'t Use A List'); ?></option>
+                                <?php foreach($lists['account_lists'] as $list){?>
+                                    <option value="<?php echo $list; ?>"><?php echo $list; ?></option>
                                 <?php } } else { ?>
                                     <option value="null"><?php echo __('No Lists Found'); ?></option>
                                 <?php } ?>
