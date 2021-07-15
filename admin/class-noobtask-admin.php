@@ -119,9 +119,9 @@ class Noobtask_Admin {
 			<p class="noobtask-title"><?php echo strtoupper(__('Get Started')); ?></p>
 			<div class="noobtask-list" style="width:100%; display:flex; flex-direction:column;list-style-type: none;">
 	
-				<?php foreach($tasks as $task){ ?>
+				<?php foreach($tasks as $key => $task){ ?>
 
-					<button data-task='<?php echo json_encode($task); ?>' class="noobtask-item <?php if($task['task_completed']){echo 'noobtask-completed';}else{echo 'noobtask-incomplete';} ?>">
+					<button data-task='<?php echo json_encode($task); ?>' class="noobtask-item noobtask-<?php echo $key; if($task['task_completed']){echo ' noobtask-completed';}else{echo ' noobtask-incomplete';} ?>">
 						<p id="noobtask-<?php echo $task['task_id']; ?>" class="noobtask-name"><?php echo strtoupper($task['task_name']); ?></p>
 					</button>
 			

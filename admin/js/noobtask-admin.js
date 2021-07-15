@@ -16,7 +16,7 @@
 
 })( jQuery );
 
-jQuery(document).ready(function($) {
+jQuery(document).ready(function() {
 
 	// Get the modal
 	var modal = document.getElementById("noobtaskModal");

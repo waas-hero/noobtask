@@ -10,7 +10,7 @@ class Default_Tasks {
                 'task_name' => 'Setup Seller Site',
                 'task_desc' => 'Task description goes here.',
                 'task_link' => '',
-                'task_selector' => '',
+                'task_selector' => '.noobtask-0',
                 'task_completed' => null,
                 'task_tag' => 'Setup Seller Site',
                 //'task_list' => 'Setup Seller Site',
@@ -20,7 +20,7 @@ class Default_Tasks {
                 'task_name' => 'Setup Buyer Site',
                 'task_desc' => 'Task description goes here.',
                 'task_link' => '',
-                'task_selector' => '',
+                'task_selector' => '.noobtask-1',
                 'task_completed' => null,
                 'task_tag' => 'Setup Buyer Site',
                 //'task_list' => 'Setup Buyer Site',
@@ -30,7 +30,7 @@ class Default_Tasks {
                 'task_name' => 'Setup Investor Site',
                 'task_desc' => 'Task description goes here.',
                 'task_link' => '',
-                'task_selector' => '',
+                'task_selector' => '.noobtask-2',
                 'task_completed' => null,
                 'task_tag' => 'Setup Investor Site',
                 //'task_list' => 'Setup Investor Site',
@@ -40,7 +40,7 @@ class Default_Tasks {
                 'task_name' => 'First Login (seller site)',
                 'task_desc' => 'Task description goes here.',
                 'task_link' => '',
-                'task_selector' => '',
+                'task_selector' => '.noobtask-3',
                 'task_completed' => null,
                 'task_tag' => 'Seller Site First Login',
                 //'task_list' => 'Seller Site First Login',
@@ -50,7 +50,7 @@ class Default_Tasks {
                 'task_name' => 'First Login (buyer site)',
                 'task_desc' => 'Task description goes here.',
                 'task_link' => '',
-                'task_selector' => '',
+                'task_selector' => '.noobtask-4',
                 'task_completed' => null,
                 'task_tag' => 'Buyer Site First Login',
                 //'task_list' => 'Buyer Site First Login',
@@ -60,7 +60,7 @@ class Default_Tasks {
                 'task_name' => 'First Login (investor site)',
                 'task_desc' => 'Task description goes here.',
                 'task_link' => '',
-                'task_selector' => '',
+                'task_selector' => '.noobtask-5',
                 'task_completed' => null,
                 'task_tag' => 'Investor Site First Login',
                 //'task_list' => 'Investor Site First Login',
@@ -70,7 +70,7 @@ class Default_Tasks {
                 'task_name' => 'Renew Investor Site',
                 'task_desc' => 'Task description goes here.',
                 'task_link' => '',
-                'task_selector' => '',
+                'task_selector' => '.noobtask-6',
                 'task_completed' => null,
                 'task_tag' => 'Renew Investor Site',
                 //'task_list' => 'Renew Investor Site',
@@ -80,7 +80,7 @@ class Default_Tasks {
                 'task_name' => 'Renew Investor Site',
                 'task_desc' => 'Task description goes here.',
                 'task_link' => '',
-                'task_selector' => '',
+                'task_selector' => '.noobtask-7',
                 'task_completed' => null,
                 'task_tag' => 'Renew Investor Site',
                 //'task_list' => 'Renew Investor Site',
@@ -90,7 +90,7 @@ class Default_Tasks {
                 'task_name' => 'Renew Plan',
                 'task_desc' => 'Task description goes here.',
                 'task_link' => '',
-                'task_selector' => '',
+                'task_selector' => '.noobtask-8',
                 'task_completed' => null,
                 'task_tag' => 'Renew Plan',
                 //'task_list' => 'Renew Plan',
@@ -100,19 +100,19 @@ class Default_Tasks {
                 'task_name' => 'Renew 30 Days',
                 'task_desc' => 'Task description goes here.',
                 'task_link' => '',
-                'task_selector' => '',
+                'task_selector' => '.noobtask-9',
                 'task_completed' => null,
                 'task_tag' => 'Renew 30 Days',
                 //'task_list' => 'Renew 30 Days',
                 'task_is_default' => true,
             ],
             'login_after_setup' => [
-                'task_name' => 'Login After Setup',
+                'task_name' => 'Added Custom Logo',
                 'task_desc' => 'Task description goes here.',
                 'task_link' => '',
-                'task_selector' => '',
+                'task_selector' => '.noobtask-10',
                 'task_completed' => null,
-                'task_tag' => 'Login After Setup',
+                'task_tag' => 'Added Custom Logo',
                 //'task_list' => 'Login After Setup',
                 'task_is_default' => true,
             ],
@@ -121,9 +121,9 @@ class Default_Tasks {
 		
 	}
 
-    //Adds site owner meta to a blog when created. We can use this later.
+    //Adds site owner id to a blog option when it's created. We can use this later.
     function add_site_owner_to_options($blog_id, $user_id){
-        add_site_option( 'site_owner_'.$blog_id, $user_id );
+        add_option( 'site_owner', $user_id );
     }   
 
     //Adds _new_user meta to new users at registration
@@ -167,23 +167,36 @@ class Default_Tasks {
                     $updated = $wpdb->update( $tableName, ['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")], [ 'task_tag' => 'Investor Site First Login' ] );
                     break;
             }
-            
-
-            update_user_meta($user->ID, '_new_user', $return);
-
-            $return = WaasHero\Kartra_Api::postLeadAction( $user->user_email, $actions = [
-                'assign_tag' => 'Login After Setup',
-            ]);
-
-            //TODO:create our own api class for these
-            $updated = $wpdb->update( $tableName, ['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")], [ 'task_name' => 'Login After Setup' ] );
-    
-            if ( false === $updated ) {
-                // There was an error.
-                update_user_meta($user->ID, '_new_user', 'Task Not Completed.');
-            } 
+        
+            if ( $return['status'] == 200 ) {
+                update_user_meta($user->ID, '_new_user', $return);
+            }
 
         }
+    }
+
+    function noobtask_check_custom_logo(){
+
+        if( has_custom_logo() && !get_option('noobtask_custom_logo') ){
+
+            $user_email = get_blog_option(get_current_blog_id(), 'admin_email');
+
+            $return = WaasHero\Kartra_Api::postLeadAction( $user_email, $actions = [
+                'assign_tag' => 'Added Custom Logo',
+            ]);
+
+            if ( $return['status'] == 200 ) {
+                //TODO:create our own api class for these
+                global $wpdb;
+                $tableName = "{$wpdb->prefix}noobtasks";
+                $updated = $wpdb->update( $tableName, ['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")], [ 'task_name' => 'Added Custom Logo' ] );
+
+                update_option( 'noobtask_custom_logo', true );
+                return true;
+            } 
+            
+        }
+        return false;
     }
 
 }

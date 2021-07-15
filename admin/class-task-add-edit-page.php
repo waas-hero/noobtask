@@ -3,28 +3,16 @@
 namespace WaasHero;
 
 /**
- * The file that defines the core plugin class
- *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
- *
- * @link       https://waashero.com/
- * @since      1.0.0
- *
- * @package    Noobtask
- * @subpackage Noobtask/includes
- */
-
-/**
- * The plugin class that registers and handles task custom post type.
+ * The plugin class that registers and handles task index/add/edit page.
  *
  *
  * @since      1.0.0
  * @package    Noobtask
- * @subpackage Noobtask/includes
+ * @subpackage Noobtask/admin
  * @author     J Hanlon <j@waashero.com>
  */
-class Task_Settings_Init {
+
+class Task_Add_Edit_Page {
 
     // task WP_List_Table object
     public $tasks_obj;
@@ -33,7 +21,7 @@ class Task_Settings_Init {
     /**
      * custom settings objects
      */
-    function noobtask_settings_init() {
+    function init() {
 
         $this->tasks_obj = new \Task_List();
         $this->kartra_obj = new Kartra_Api();
@@ -43,13 +31,20 @@ class Task_Settings_Init {
     /**
      * Add a top level menu page.
      */
-    function noobtask_options_page() {
+    function add_menu() {
         add_menu_page(
             'Starter Tasks',
             'Starter Tasks',
             'manage_options',
+            'noobtask'
+        );
+        add_submenu_page(
             'noobtask',
-            [$this, 'noobtask_options_page_html']
+            'Starter Tasks',
+            'Tasks',
+            'manage_options',
+            'noobtask',
+            [$this, 'page_html']
         );
     }
     
@@ -131,7 +126,7 @@ class Task_Settings_Init {
     /**
      * Top level menu callback function
      */
-    function noobtask_options_page_html() {
+    function page_html() {
 
         // check user capabilities
         if ( ! current_user_can( 'manage_options' ) ) {
