@@ -57,31 +57,29 @@ class Task_Add_Edit_Page {
         $task_link = sanitize_url($_POST["task_link"]);
         $task_selector = sanitize_text_field($_POST["task_selector"]);
 
-        $tableName = "{$wpdb->prefix}noobtasks";
-        $insert_row = $wpdb->insert( 
-                        $tableName, 
-                        array( 
-                            'task_name' => $task_name, 
-                            'task_link' => $task_link,
-                            'task_selector' => $task_selector,
-                            'task_list' => $task_list, 
-                            'task_tag' => $task_tag, 
-                            'task_completed' => false,
-                        )
-                    );
-        // if row inserted in table
-        if($insert_row){
-            echo json_encode(array('res'=>true, 'message'=>__('New task added.'), 'data' =>array( 
-                'task_name' => $task_name, 
-                'task_link' => $task_link,
-                'task_selector' => $task_selector,
-                'task_list' => $task_list, 
-                'task_tag' => $task_tag, 
-                'task_completed' => false,
-            )));
-        }else{
-            echo json_encode(array('res'=>false, 'message'=>__('Something went wrong. Please try again later.')));
-        }
+        $dataArray = array( 
+            'task_name' => $task_name, 
+            'task_link' => $task_link,
+            'task_selector' => $task_selector,
+            'task_list' => $task_list, 
+            'task_tag' => $task_tag, 
+            'task_completed' => false,
+        );
+
+        $response = NoobTask_Api::save($dataArray);
+        echo $response;
+        wp_die();
+    }
+
+    function save_noobtask_options_ajax(){
+        global $wpdb;
+
+        $name = sanitize_text_field($_POST["name"]);
+        $value = sanitize_text_field($_POST["value"]);
+
+        $response = NoobTask_Options_Api::save($name,$value);
+        echo $response;
+
         wp_die();
     }
 
@@ -91,18 +89,21 @@ class Task_Add_Edit_Page {
         $task_id = intval($_POST["task_id"]);
         $task_tag = sanitize_text_field($_POST["task_tag"]);
         $task_list = sanitize_text_field($_POST["task_list"]);
-
-        $tableName = "{$wpdb->prefix}noobtasks";
-
-        $updated = $wpdb->update( $tableName, ['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")], [ 'task_id' => $task_id ] );
  
-        if ( false === $updated ) {
+        $dataArray = [
+            'task_completed' => true, 
+            'completed_at' => date("Y-m-d H:m:s")
+        ];
+        $whereArray = [ 
+            'task_id' => $task_id 
+        ];
+
+        $response = NoobTask_Api::update($dataArray, $whereArray);
+        
+        if ( $response['res'] == false ) {
             // There was an error.
-            echo json_encode(array(
-                'res'=>false, 
-                'message'=>__('Error: Task NOT marked complete.'),
-                'data' => $updated
-            ));
+            echo $response;
+
         } else {
             
             //valid values are only subscribe_lead_to_list, assign_tag, and give_points_to_lead
@@ -112,12 +113,8 @@ class Task_Add_Edit_Page {
                 'subscribe_lead_to_list' => $task_list,
             ]);
             
-            // No error. You can check updated to see how many rows were changed.
-            echo json_encode(array(
-                'res'=>true, 
-                'message'=>__('Task marked complete.'),
-                'data' => $return
-            ));
+            // No error. 
+            echo $response;
         }
         wp_die();
     }
@@ -134,8 +131,9 @@ class Task_Add_Edit_Page {
         }
         
         if(!KARTRA_API_KEY){
-            $noApiKeyError = '<b>Don\'t forget to add the Kartra_API_KEY and Kartra_API_PASS constants to wp-config.php.<br/> The key and password values can be found in your Kartra Account using the following link. <a target="_blank" href="https://app.kartra.com/integrations/api/key">KARTRA API KEY</a></b>';
+            $noApiKeyError = '<b>Don\'t forget to add define(\'KARTRA_API_KEY\', \'yourapikey\'); and define(\'KARTRA_API_PASS\', \'yourapipassword\'); to wp-config.php.<br/> The key and password values can be found in your Kartra Account using the following link. <a target="_blank" href="https://app.kartra.com/integrations/api/key">KARTRA API KEY</a></b>';
         }
+        $site_type = NoobTask_Options_Api::get('site_type');
         ?>
         <div class="wrap">
 
@@ -145,8 +143,30 @@ class Task_Add_Edit_Page {
                 box-shadow: none;
             }
         </style>
+
         <h1 class=""><?php echo get_admin_page_title(); ?></h1>
             
+        <div class="noobtask-adminbox" style="background:white; padding:20px; border-radius:8px; margin-top:20px;">
+
+            <form method="POST" action="" id="task_options_form">
+                <table class="form-table" role="presentation">
+                    <tbody>
+                        <tr class="noobtask_row">
+                            <th scope="row">
+                                <label for="site_type">REI Site Type</label>
+                            </th>
+                            <td>
+                                <input type="text" value="<?php echo $site_type; ?>" id="site_type" name="site_type" style="width:100%; max-width:300px;">
+                                <p class="description">Valid options are <b>seller</b>, <b>buyer</b>, or <b>investor</b>.</p>
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <input type="submit" value="<?php echo __('Save Options'); ?>" id="submit_task_options_form" class="button button-primary" style="margin-top:30px; width:150px;"/>
+            </form>
+        </div>
         <div class="" style="background:white; padding:20px; border-radius:8px; margin-top:20px;">
         
         <?php if( isset($noApiKeyError) ){ 
@@ -248,6 +268,30 @@ class Task_Add_Edit_Page {
             });
             </script>
 
+        <script>
+            jQuery('form#task_options_form').on('submit', function(e){
+                e.preventDefault();
+
+                jQuery.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: "<?php echo admin_url('admin-ajax.php'); ?>", 
+                    data: { 
+                        'action' : 'save_noobtask_options_ajax',
+                        'name': this.elements.site_type.name,
+                        'value': this.elements.site_type.value,
+                    },
+                    success: function(data){
+                        if (data.res == true){
+                            location.href = '<?php echo $redirect_url; ?>'+'&updated=true';
+                        }else{
+                            alert(data.message);    // fail
+                        }
+                    }
+                });
+            });
+            </script>
+
             </div>
 
             <div class="" style="background:white; padding:20px; border-radius:8px; margin-top:40px;">
@@ -258,5 +302,13 @@ class Task_Add_Edit_Page {
              </div>
         </div>
         <?php
+    }
+
+    function admin_notices(){
+
+        if( isset($_GET['page']) && $_GET['page'] == 'noobtask' && isset( $_GET['updated'] )  ) {
+            echo '<div id="message" class="updated notice is-dismissible"><p>Options updated.</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+        }
+    
     }
 }

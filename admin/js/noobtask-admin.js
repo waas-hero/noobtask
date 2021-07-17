@@ -2,17 +2,22 @@
 	'use strict';
 
 	 $( document ).ready(function() {
-		CheckForHighlight();
+
+		$( '.notice-dismiss' ).on( "click", function() {
+			$( this ).parent().hide();
+		  });
+		
+		//CheckForHighlight();
 	});
 	
 	//highlightedElemclass has box shadow or border
-	function CheckForHighlight(){
-		let searchParams = new URLSearchParams(window.location.search)
-		if(searchParams.has('highlight')){
-			let param = searchParams.get('highlight')
-			$(param).addClass('highlightedElem');
-		}
-	}
+	// function CheckForHighlight(){
+	// 	let searchParams = new URLSearchParams(window.location.search)
+	// 	if(searchParams.has('highlight')){
+	// 		let param = searchParams.get('highlight')
+	// 		$(param).addClass('highlightedElem');
+	// 	}
+	// }
 
 })( jQuery );
 

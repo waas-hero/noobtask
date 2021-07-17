@@ -81,11 +81,10 @@ class Noobtask {
 		$this->define_kartra_api_hooks();
 		$this->define_default_tasks();
 		$this->define_cron_hooks();
-		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-		$this->define_settings_hooks();
-		
+		$this->set_locale();
+
 	}
 
 	/**
@@ -133,6 +132,16 @@ class Noobtask {
 		 * The class responsible for defining all kartra api functions and related ajax actions.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-kartra-api.php';
+
+		/**
+		 * The class responsible for defining noobtask option api functions.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-noobtask-options-api.php';
+
+		/**
+		 * The class responsible for defining noobtask api functions.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-noobtask-api.php';
 
 		/**
 		 * The class responsible for defining all default tasks.
@@ -190,10 +199,21 @@ class Noobtask {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Noobtask_Admin( $this->get_plugin_name(), $this->get_version() );
-
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'wp_dashboard_setup', $plugin_admin,'add_dashboard_widgets' );
+
+		$task_page = new Task_Add_Edit_Page( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'admin_init', $task_page, 'init' );
+		$this->loader->add_action( 'admin_menu', $task_page, 'add_menu');
+        $this->loader->add_action( 'wp_ajax_save_noobtask_ajax', $task_page, 'save_noobtask_ajax' );
+		$this->loader->add_action( 'wp_ajax_complete_noobtask_ajax', $task_page, 'complete_noobtask_ajax' );
+		$this->loader->add_action( 'admin_notices', $task_page, 'admin_notices');
+		$this->loader->add_action( 'wp_ajax_save_noobtask_options_ajax', $task_page, 'save_noobtask_options_ajax' );
+
+		$options_page = new Task_Network_Options_Page( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'network_admin_menu', $options_page, 'add_menu');
+		$this->loader->add_action( 'network_admin_edit_noobtaskaction', $options_page, 'save_settings' );
 
 	}
 
@@ -243,29 +263,6 @@ class Noobtask {
 		$this->loader->add_action('init', $default_tasks, 'noobtask_check_custom_logo');
 
 	}
-
-
-	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_settings_hooks() {
-
-		$task_page = new Task_Add_Edit_Page( $this->get_plugin_name(), $this->get_version() );
-		$this->loader->add_action( 'admin_init', $task_page, 'init' );
-		$this->loader->add_action( 'admin_menu', $task_page, 'add_menu');
-        $this->loader->add_action( 'wp_ajax_save_noobtask_ajax', $task_page, 'save_noobtask_ajax' );
-		$this->loader->add_action( 'wp_ajax_complete_noobtask_ajax', $task_page, 'complete_noobtask_ajax' );
-
-		$options_page = new Task_Network_Options_Page( $this->get_plugin_name(), $this->get_version() );
-		$this->loader->add_action( 'network_admin_menu', $options_page, 'add_menu');
-		$this->loader->add_action( 'network_admin_edit_noobtaskaction', $options_page, 'save_settings' );
-    
-	}
-
 	
 	/**
 	 * Register all of the hooks related to the public-facing functionality

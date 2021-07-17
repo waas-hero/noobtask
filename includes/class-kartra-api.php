@@ -5,9 +5,8 @@ class Kartra_Api {
 
     public const KARTRA_API_ENDPOINT = 'https://app.kartra.com/api';
     private const NOOBTASK_APP_ID = 'kNLBdAFmuOhM';
-    //TODO: get api key from ENV or other safer method
-    private static $noobtask_user_api_key = KARTRA_API_KEY ? KARTRA_API_KEY : '';
-    private static $noobtask_user_api_pass = KARTRA_API_PASS ? KARTRA_API_PASS : '';
+    private static $noobtask_user_api_key = KARTRA_API_KEY;
+    private static $noobtask_user_api_pass = KARTRA_API_PASS;
     public $tags_object;
 
     /**

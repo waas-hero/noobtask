@@ -60,7 +60,8 @@ function activate_noobtask() {
 	Noobtask_Activator::activate();
 	$activate = new Noobtask_Activator;
 	$activate->create_db_table();
-	$activate->preload_data();
+	$activate->preload_task_data();
+	$activate->preload_option_data();
 }
 
 /**

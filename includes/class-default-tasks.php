@@ -14,6 +14,8 @@ class Default_Tasks {
                 'task_completed' => null,
                 'task_tag' => 'Setup Seller Site',
                 //'task_list' => 'Setup Seller Site',
+                'site_type' => 'seller',
+                'visible' => true,
                 'task_is_default' => true,
             ],
             'setup_buyer_site' => [
@@ -24,6 +26,8 @@ class Default_Tasks {
                 'task_completed' => null,
                 'task_tag' => 'Setup Buyer Site',
                 //'task_list' => 'Setup Buyer Site',
+                'site_type' => 'buyer',
+                'visible' => true,
                 'task_is_default' => true,
             ],
             'setup_investor_site' => [
@@ -34,6 +38,8 @@ class Default_Tasks {
                 'task_completed' => null,
                 'task_tag' => 'Setup Investor Site',
                 //'task_list' => 'Setup Investor Site',
+                'site_type' => 'investor',
+                'visible' => true,
                 'task_is_default' => true,
             ],
             'first_login_seller_site' => [
@@ -44,6 +50,8 @@ class Default_Tasks {
                 'task_completed' => null,
                 'task_tag' => 'Seller Site First Login',
                 //'task_list' => 'Seller Site First Login',
+                'site_type' => 'seller',
+                'visible' => true,
                 'task_is_default' => true,
             ],
             'first_login_buyer_site' => [
@@ -54,6 +62,8 @@ class Default_Tasks {
                 'task_completed' => null,
                 'task_tag' => 'Buyer Site First Login',
                 //'task_list' => 'Buyer Site First Login',
+                'site_type' => 'buyer',
+                'visible' => true,
                 'task_is_default' => true,
             ],
             'first_login_investor_site' => [
@@ -64,26 +74,8 @@ class Default_Tasks {
                 'task_completed' => null,
                 'task_tag' => 'Investor Site First Login',
                 //'task_list' => 'Investor Site First Login',
-                'task_is_default' => true,
-            ],
-            'renew_investor_site' => [
-                'task_name' => 'Renew Investor Site',
-                'task_desc' => 'Task description goes here.',
-                'task_link' => '',
-                'task_selector' => '.noobtask-6',
-                'task_completed' => null,
-                'task_tag' => 'Renew Investor Site',
-                //'task_list' => 'Renew Investor Site',
-                'task_is_default' => true,
-            ],
-            'renew_investor_site' => [
-                'task_name' => 'Renew Investor Site',
-                'task_desc' => 'Task description goes here.',
-                'task_link' => '',
-                'task_selector' => '.noobtask-7',
-                'task_completed' => null,
-                'task_tag' => 'Renew Investor Site',
-                //'task_list' => 'Renew Investor Site',
+                'site_type' => 'investor',
+                'visible' => true,
                 'task_is_default' => true,
             ],
             'renew_plan' => [
@@ -94,6 +86,8 @@ class Default_Tasks {
                 'task_completed' => null,
                 'task_tag' => 'Renew Plan',
                 //'task_list' => 'Renew Plan',
+                'site_type' => null,
+                'visible' => true,
                 'task_is_default' => true,
             ],
             'renew_30_days' => [
@@ -104,6 +98,8 @@ class Default_Tasks {
                 'task_completed' => null,
                 'task_tag' => 'Renew 30 Days',
                 //'task_list' => 'Renew 30 Days',
+                'site_type' => null,
+                'visible' => true,
                 'task_is_default' => true,
             ],
             'login_after_setup' => [
@@ -114,6 +110,8 @@ class Default_Tasks {
                 'task_completed' => null,
                 'task_tag' => 'Added Custom Logo',
                 //'task_list' => 'Login After Setup',
+                'site_type' => null,
+                'visible' => true,
                 'task_is_default' => true,
             ],
             
