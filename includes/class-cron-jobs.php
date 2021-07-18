@@ -11,12 +11,15 @@ class CronJobs {
         
         if(!$tasks){ return; }
         
+        $site_type = NoobTask_Options_Api::get('site_type');
+
         $return = [];
 
         foreach($tasks as $task){
             
+            //Check for Site Type. 
             //If task was not completed, dont update Kartra. This may change.
-            if($task['task_completed']){
+            if($task['task_completed'] && $task['site_type'] == $site_type){
 
                 $response = Kartra_Api::postLeadAction( get_bloginfo( 'admin_email' ),  [
                     'assign_tag' => $task['task_tag'],
