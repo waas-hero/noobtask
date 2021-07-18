@@ -55,11 +55,11 @@ class NoobTask_Api {
     static function getDefault(){
 
         global $wpdb;
-        $tableName = "{$wpdb->prefix}noobtasks";
+        $tableName = self::$table_name;
         return $wpdb->get_results($wpdb->prepare( 
-            "SELECT * FROM $tableName WHERE task_is_default = %d",
+            "SELECT * FROM {$wpdb->prefix}$tableName WHERE task_is_default = %d",
             true
-        ));
+        ), ARRAY_A);
 		
 	}
 
