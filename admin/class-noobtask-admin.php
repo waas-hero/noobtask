@@ -112,20 +112,21 @@ class Noobtask_Admin {
 		$tasks = self::get_tasks();
 		// $job = new CronJobs;
 		// print_r($job->get_default_tasks_from_db());
-		echo 'Site Type: '.SUBSITE_TYPE;
+		$site_type = NoobTask_Options_Api::get('site_type');
+		
 		?>
 		<div class="noobtask-list-container">
 			
-			<p class="noobtask-title"><?php echo strtoupper(__('Get Started')); ?></p>
+			<p class="noobtask-title"><?php echo 'Your current site type: <b>'.$site_type.'</b>'; ?></p>
 			<div class="noobtask-list" style="width:100%; display:flex; flex-direction:column;list-style-type: none;">
 	
-				<?php foreach($tasks as $key => $task){ ?>
-
+				<?php foreach($tasks as $key => $task){ if( ($task['site_type'] === $site_type || $task['site_type'] == null) && $task['visible']){ ?>
+					
 					<button data-task='<?php echo json_encode($task); ?>' class="noobtask-item noobtask-<?php echo $key; if($task['task_completed']){echo ' noobtask-completed';}else{echo ' noobtask-incomplete';} ?>">
 						<p id="noobtask-<?php echo $task['task_id']; ?>" class="noobtask-name"><?php echo strtoupper($task['task_name']); ?></p>
 					</button>
 			
-			<?php } ?>
+			<?php } } ?>
 			</div>
 		</div>
 

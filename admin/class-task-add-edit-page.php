@@ -56,13 +56,19 @@ class Task_Add_Edit_Page {
         $task_tag = sanitize_text_field($_POST["task_tag"]);
         $task_link = sanitize_url($_POST["task_link"]);
         $task_selector = sanitize_text_field($_POST["task_selector"]);
+        $task_desc = sanitize_text_field($_POST["task_desc"]);
+        $visible = intval($_POST["visible"]);
+        $site_type = sanitize_text_field($_POST["site_type"]);
 
         $dataArray = array( 
             'task_name' => $task_name, 
+            'task_desc' => $task_desc,
             'task_link' => $task_link,
             'task_selector' => $task_selector,
             'task_list' => $task_list, 
             'task_tag' => $task_tag, 
+            'visible' => $visible,
+            'site_type' => $site_type,
             'task_completed' => false,
         );
 
@@ -161,7 +167,6 @@ class Task_Add_Edit_Page {
 
                             </td>
                         </tr>
-
                     </tbody>
                 </table>
                 <input type="submit" value="<?php echo __('Save Options'); ?>" id="submit_task_options_form" class="button button-primary" style="margin-top:30px; width:150px;"/>
@@ -186,6 +191,15 @@ class Task_Add_Edit_Page {
                     </tr>
                     <tr class="noobtask_row">
                         <th scope="row">
+                            <label for="task_desc">Task Description</label>
+                        </th>
+                        <td>
+                            <textarea id="task_desc" name="task_desc" style="width:100%; max-width:300px;">
+                            </textarea>
+                        </td>
+                    </tr>
+                    <tr class="noobtask_row">
+                        <th scope="row">
                             <label for="task_link">Task Page Link</label>
                         </th>
                         <td>
@@ -202,17 +216,26 @@ class Task_Add_Edit_Page {
                     </tr>
                     <tr class="noobtask_row">
                         <th scope="row">
+                            <label for="site_type">Site Type</label>
+                        </th>
+                        <td>
+                            <input type="text" id="site_type" name="site_type" style="width:100%; max-width:300px;">
+                        </td>
+                    </tr>
+  
+                    <tr class="noobtask_row">
+                        <th scope="row">
                             <label for="task_tag">Kartra Tag</label>
                         </th>
                         <td>
                         <?php $tags = $this->kartra_obj->getKartraTags(); ?>
                             <select id="task_tag" name="task_tag" style="width:100%; max-width:300px;">
                                 <?php if( isset($tags['account_tags']) ){ ?>
-                                    <option value="null"><?php echo __('Don\'t Use A Tag'); ?></option>
+                                    <option value=""><?php echo __('Don\'t Use A Tag'); ?></option>
                                 <?php foreach($tags['account_tags'] as $tag){?>
                                     <option value="<?php echo $tag; ?>"><?php echo $tag; ?></option>
                                 <?php } } else { ?>
-                                    <option value="null"><?php echo __('No Tags Found'); ?></option>
+                                    <option value=""><?php echo __('No Tags Found'); ?></option>
                                 <?php } ?>
                             </select>
                         </td>
@@ -225,16 +248,19 @@ class Task_Add_Edit_Page {
                         <?php $lists = $this->kartra_obj->getKartraLists(); ?>
                             <select id="task_list" name="task_list" style="width:100%; max-width:300px;">
                                 <?php if( isset($lists['account_lists']) ){ ?>
-                                    <option value="null"><?php echo __('Don\'t Use A List'); ?></option>
+                                    <option value=""><?php echo __('Don\'t Use A List'); ?></option>
                                 <?php foreach($lists['account_lists'] as $list){?>
                                     <option value="<?php echo $list; ?>"><?php echo $list; ?></option>
                                 <?php } } else { ?>
-                                    <option value="null"><?php echo __('No Lists Found'); ?></option>
+                                    <option value=""><?php echo __('No Lists Found'); ?></option>
                                 <?php } ?>
                             </select>
                         </td>
                     </tr> 
-       
+                    <tr class="noobtask_row">
+                        <th scope="row"><label for="visible">Visible</label></th>
+                        <td><label><input name="visible" id="visible" type="checkbox" value="1" <?php checked( get_site_option( 'visible'), '1' ) ?>>Make this step visible.</label></td>
+                    </tr>
                    
                 </tbody>
             </table>
@@ -252,10 +278,13 @@ class Task_Add_Edit_Page {
                     data: { 
                         'action' : 'save_noobtask_ajax',
                         'task_name': this.elements.task_name.value,
+                        'task_desc': this.elements.task_desc.value,
                         'task_link': this.elements.task_link.value,
                         'task_selector': this.elements.task_selector.value,
                         'task_list': this.elements.task_list.value,
                         'task_tag': this.elements.task_tag.value,
+                        'site_type': this.elements.site_type.value,
+                        'visible': this.elements.visible.value,
                     },
                     success: function(data){
                         if (data.res == true){

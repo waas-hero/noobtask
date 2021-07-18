@@ -6,9 +6,9 @@ class Default_Tasks {
     public static function auto_tasks(){
 
         return [
-            'setup_seller_site' => [
+            [
                 'task_name' => 'Setup Seller Site',
-                'task_desc' => 'Task description goes here.',
+                'task_desc' => 'Finish setting up your seller site.',
                 'task_link' => '',
                 'task_selector' => '.noobtask-0',
                 'task_completed' => null,
@@ -18,9 +18,9 @@ class Default_Tasks {
                 'visible' => true,
                 'task_is_default' => true,
             ],
-            'setup_buyer_site' => [
+            [
                 'task_name' => 'Setup Buyer Site',
-                'task_desc' => 'Task description goes here.',
+                'task_desc' => 'Finish setting up your buyer site.',
                 'task_link' => '',
                 'task_selector' => '.noobtask-1',
                 'task_completed' => null,
@@ -30,9 +30,9 @@ class Default_Tasks {
                 'visible' => true,
                 'task_is_default' => true,
             ],
-            'setup_investor_site' => [
+            [
                 'task_name' => 'Setup Investor Site',
-                'task_desc' => 'Task description goes here.',
+                'task_desc' => 'Finish setting up your investor site.',
                 'task_link' => '',
                 'task_selector' => '.noobtask-2',
                 'task_completed' => null,
@@ -42,71 +42,71 @@ class Default_Tasks {
                 'visible' => true,
                 'task_is_default' => true,
             ],
-            'first_login_seller_site' => [
+            [
                 'task_name' => 'First Login (seller site)',
-                'task_desc' => 'Task description goes here.',
+                'task_desc' => 'User logged in to their seller site.',
                 'task_link' => '',
                 'task_selector' => '.noobtask-3',
                 'task_completed' => null,
                 'task_tag' => 'Seller Site First Login',
                 //'task_list' => 'Seller Site First Login',
                 'site_type' => 'seller',
-                'visible' => true,
+                'visible' => false,
                 'task_is_default' => true,
             ],
-            'first_login_buyer_site' => [
+            [
                 'task_name' => 'First Login (buyer site)',
-                'task_desc' => 'Task description goes here.',
+                'task_desc' => 'User logged in to their buyer site.',
                 'task_link' => '',
                 'task_selector' => '.noobtask-4',
                 'task_completed' => null,
                 'task_tag' => 'Buyer Site First Login',
                 //'task_list' => 'Buyer Site First Login',
                 'site_type' => 'buyer',
-                'visible' => true,
+                'visible' => false,
                 'task_is_default' => true,
             ],
-            'first_login_investor_site' => [
+            [
                 'task_name' => 'First Login (investor site)',
-                'task_desc' => 'Task description goes here.',
+                'task_desc' => 'User logged in to their investor site.',
                 'task_link' => '',
                 'task_selector' => '.noobtask-5',
                 'task_completed' => null,
                 'task_tag' => 'Investor Site First Login',
                 //'task_list' => 'Investor Site First Login',
                 'site_type' => 'investor',
-                'visible' => true,
+                'visible' => false,
                 'task_is_default' => true,
             ],
-            'renew_plan' => [
+            [
                 'task_name' => 'Renew Plan',
-                'task_desc' => 'Task description goes here.',
+                'task_desc' => 'User renewed their plan.',
                 'task_link' => '',
-                'task_selector' => '.noobtask-8',
+                'task_selector' => '.noobtask-6',
                 'task_completed' => null,
                 'task_tag' => 'Renew Plan',
                 //'task_list' => 'Renew Plan',
                 'site_type' => null,
-                'visible' => true,
+                'visible' => false,
                 'task_is_default' => true,
             ],
-            'renew_30_days' => [
+            [
                 'task_name' => 'Renew 30 Days',
-                'task_desc' => 'Task description goes here.',
+                'task_desc' => 'User has 30 days to renew their plan.',
                 'task_link' => '',
-                'task_selector' => '.noobtask-9',
+                'task_selector' => '.noobtask-7',
                 'task_completed' => null,
                 'task_tag' => 'Renew 30 Days',
                 //'task_list' => 'Renew 30 Days',
                 'site_type' => null,
-                'visible' => true,
+                'visible' => false,
                 'task_is_default' => true,
             ],
-            'login_after_setup' => [
-                'task_name' => 'Added Custom Logo',
-                'task_desc' => 'Task description goes here.',
+            [
+                'task_name' => 'Add A Custom Logo',
+                'task_desc' => 'Add your companies logo to your website. This is necessary to provide consistent branding across your platforms.',
                 'task_link' => '',
-                'task_selector' => '.noobtask-10',
+                'task_selector' => '.noobtask-8',
                 'task_completed' => null,
                 'task_tag' => 'Added Custom Logo',
                 //'task_list' => 'Login After Setup',
@@ -187,7 +187,7 @@ class Default_Tasks {
                 //TODO:create our own api class for these
                 global $wpdb;
                 $tableName = "{$wpdb->prefix}noobtasks";
-                $updated = $wpdb->update( $tableName, ['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")], [ 'task_name' => 'Added Custom Logo' ] );
+                $updated = $wpdb->update( $tableName, ['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")], [ 'task_name' => 'Add A Custom Logo' ] );
 
                 update_option( 'noobtask_custom_logo', true );
                 return true;

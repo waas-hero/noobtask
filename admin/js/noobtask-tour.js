@@ -5,24 +5,29 @@ jQuery(document).ready(function() {
     const taskArray = [];
 
     noobTasks.forEach(function(task) {
+
         if( ! jQuery(task.task_selector).length ){return;};
-        taskArray.push({
-            element: task.task_selector,   
-            //stageBackground: '#ffffff',   // This will override the one set in driver
-            popover: {                    // There will be no popover if empty or not given
-                position: 'right',
-                //className: 'popover-class', 
-                title: task.task_name,             
-                description: task.task_desc, 
-                showButtons: true,         
-                doneBtnText: 'Done',
-                closeBtnText: 'Close',
-                nextBtnText: 'Next',
-                prevBtnText: 'Previous',
-            },
-            onNext: () => {},             // Called when moving to next step from current step
-            onPrevious: () => {},         // Called when moving to previous step from current step
-        })
+
+        if(task.task_completed == null || task.task_completed == 0){
+            taskArray.push({
+                element: task.task_selector,   
+                stageBackground: '#ffffff',   // This will override the one set in driver
+                popover: {                    // There will be no popover if empty or not given
+                    position: 'right',
+                    className: 'popover-class', 
+                    title: task.task_name,             
+                    description: task.task_desc, 
+                    showButtons: true,         
+                    doneBtnText: 'Done',
+                    closeBtnText: 'Close',
+                    nextBtnText: 'Next',
+                    prevBtnText: 'Previous',
+                },
+                onNext: () => {},             // Called when moving to next step from current step
+                onPrevious: () => {},         // Called when moving to previous step from current step
+            })
+        }
+
     });
 
     //define all steps in an array & start the tour
