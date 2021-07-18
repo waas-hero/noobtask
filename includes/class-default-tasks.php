@@ -129,40 +129,28 @@ class Default_Tasks {
         add_user_meta($user_id, '_new_user', '1');
     }
 
+    //Track last user logins
+    function track_user_login($user_login, $user) {
+        update_user_meta($user->ID, 'last_login', time());
+    }
     //Checks value at user login, and updates Kartra with Tag and/or List
     function noobtask_first_user_login($user_login, $user) {
 
-        update_user_meta($user->ID, 'last_login', time());
-
         $new_user = get_user_meta($user->ID, '_new_user', true);
+
         if ($new_user) {
 
-            global $wpdb;
-            $tableName = "{$wpdb->prefix}noobtasks";
-
+            $site_type = WaasHero\NoobTask_Options_Api::get('site_type');
             //Constant MUST be defined in wp-config.php or elsewhere, Valid values are buyer, seller, investor
-            switch (strtolower(SUBSITE_TYPE)) {
+            switch (strtolower($site_type)) {
                 case 'buyer':
-                    $return = WaasHero\Kartra_Api::postLeadAction( $user->user_email, $actions = [
-                        'assign_tag' => 'Buyer Site First Login',
-                        //'subscribe_lead_to_list' => 'Login After Setup',
-                    ]);
-                    //TODO:Check for error and update accordingly. Store error in db to display to user?
-                    $updated = $wpdb->update( $tableName, ['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")], [ 'task_tag' => 'Buyer Site First Login' ] );
+                    WaasHero\NoobTask_Api::update(['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")],[ 'task_name' => 'Buyer Site First Login' ]);
                     break;
                 case 'seller':
-                    $return = WaasHero\Kartra_Api::postLeadAction( $user->user_email, $actions = [
-                        'assign_tag' => 'Seller Site First Login',
-                        //'subscribe_lead_to_list' => 'Login After Setup',
-                    ]);
-                    $updated = $wpdb->update( $tableName, ['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")], [ 'task_tag' => 'Seller Site First Login' ] );
+                    WaasHero\NoobTask_Api::update(['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")],[ 'task_name' => 'Seller Site First Login' ]);
                     break;
                 case 'investor':
-                    $return = WaasHero\Kartra_Api::postLeadAction( $user->user_email, $actions = [
-                        'assign_tag' => 'Investor Site First Login',
-                        //'subscribe_lead_to_list' => 'Login After Setup',
-                    ]);
-                    $updated = $wpdb->update( $tableName, ['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")], [ 'task_tag' => 'Investor Site First Login' ] );
+                    WaasHero\NoobTask_Api::update(['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")],[ 'task_name' => 'Investor Site First Login' ]);
                     break;
             }
         
@@ -173,26 +161,10 @@ class Default_Tasks {
         }
     }
 
-    function noobtask_check_custom_logo(){
-
-        if( has_custom_logo() && !get_option('noobtask_custom_logo') ){
-
-            $user_email = get_blog_option(get_current_blog_id(), 'admin_email');
-
-            $return = WaasHero\Kartra_Api::postLeadAction( $user_email, $actions = [
-                'assign_tag' => 'Added Custom Logo',
-            ]);
-
-            if ( $return['status'] == 200 ) {
-                //TODO:create our own api class for these
-                global $wpdb;
-                $tableName = "{$wpdb->prefix}noobtasks";
-                $updated = $wpdb->update( $tableName, ['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")], [ 'task_name' => 'Add A Custom Logo' ] );
-
-                update_option( 'noobtask_custom_logo', true );
-                return true;
-            } 
-            
+    function check_for_custom_logo(){
+        $task = WaasHero\NoobTask_Api::getByName('Add A Custom Logo');
+        if( has_custom_logo() && $task && !$task['task_completed'] ){
+            return WaasHero\NoobTask_Api::update(['task_completed' => true, 'completed_at' => date("Y-m-d H:m:s")],[ 'task_name' => 'Add A Custom Logo' ]);
         }
         return false;
     }

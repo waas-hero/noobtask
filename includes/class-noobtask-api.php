@@ -6,10 +6,21 @@ class NoobTask_Api {
 
     public static $table_name = 'noobtasks';
     
+    static function get($whereArray){
+        global $wpdb;
+        $tableName = self::$table_name;
+        $row = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}$tableName WHERE $whereArray" );
+        if($row){
+            return $row;
+        } else {
+            return null;
+        }
+    }
+
     static function getById($id){
         global $wpdb;
         $tableName = self::$table_name;
-        $row = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}$tableName WHERE id = %d", $id ) );
+        $row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}$tableName WHERE id = %d", $id ) );
         if($row){
             return $row;
         } else {
@@ -20,7 +31,9 @@ class NoobTask_Api {
     static function getByName($name){
         global $wpdb;
         $tableName = self::$table_name;
-        $row = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}$tableName WHERE name = %s", $name ) );
+
+        $row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}$tableName WHERE task_name = %s", $name ), ARRAY_A );
+
         if($row){
             return $row;
         } else {
@@ -38,6 +51,17 @@ class NoobTask_Api {
             return json_encode([ 'success'=>false, 'message'=>__('No Tasks found.') ]);
         }
     }
+
+    static function getDefault(){
+
+        global $wpdb;
+        $tableName = "{$wpdb->prefix}noobtasks";
+        return $wpdb->get_results($wpdb->prepare( 
+            "SELECT * FROM $tableName WHERE task_is_default = %d",
+            true
+        ));
+		
+	}
 
     static function save($dataArray){
         global $wpdb;

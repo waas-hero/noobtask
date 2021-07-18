@@ -44,21 +44,21 @@ class Task_Network_Options_Page {
 		<form method="post" action="edit.php?action=noobtaskaction">
 			<?php wp_nonce_field( 'noobtask-validate' ); ?>
 	
-			<h2>Section 1</h2>
+			<h2>Network Options</h2>
 			<table class="form-table">
 				<tr>
-					<th scope="row"><label for="some_field">Some option</label></th>
+					<th scope="row"><label for="noobtask_widget_title">Widget Title</label></th>
 					<td>
-						<input name="some_field" class="regular-text" type="text" id="some_field" value="<?php echo esc_attr( get_site_option( 'some_field') ); ?>" />
-						<p class="description">Field description can be added here.</p>
+						<input name="noobtask_widget_title" class="regular-text" type="text" id="noobtask_widget_title" value="<?php echo esc_attr( get_site_option( 'noobtask_widget_title') ); ?>" />
+						<!-- <p class="description">Field description can be added here.</p> -->
 					</td>
 				</tr>
 			</table>
-			<h2>Section 2</h2>
+			<h2>Extra Options</h2>
 			<table class="form-table">
 				<tr>
-					<th scope="row">Some checkbox</th>
-					<td><label><input name="some_checkbox" type="checkbox" value="1" <?php checked( get_site_option( 'some_checkbox'), '1' ) ?>>Yes, check this checkbox</label></td>
+					<th scope="row" style="color:red;">Delete Data On Deactivate</th>
+					<td><label><input name="delete_noobtask_on_deactivate" type="checkbox" value="1" <?php checked( get_site_option( 'delete_noobtask_on_deactivate'), '1' ) ?>>Warning: This is a destructive option, and will delete all Starter Task data from the DB. ALWAYS create a backup before making any changes to your DB.</label></td>
 				</tr>
 			</table>
 			<?php echo submit_button(); ?>
@@ -72,11 +72,11 @@ class Task_Network_Options_Page {
         check_admin_referer( 'noobtask-validate' ); // Nonce security check
 
 
-        $some_checkbox = intval($_POST["some_checkbox"]);
-        $some_field = sanitize_text_field($_POST["some_field"]);
+        $delete_noobtask_on_deactivate = intval($_POST["delete_noobtask_on_deactivate"]);
+        $noobtask_widget_title = sanitize_text_field($_POST["noobtask_widget_title"]);
 
-        update_site_option( 'some_field', $some_field );
-        update_site_option( 'some_checkbox', $some_checkbox );
+        update_site_option( 'noobtask_widget_title', $noobtask_widget_title );
+        update_site_option( 'delete_noobtask_on_deactivate', $delete_noobtask_on_deactivate );
 
         wp_redirect( add_query_arg( array(
             'page' => 'noobtask-options',

@@ -34,7 +34,7 @@ jQuery(document).ready(function() {
     if(taskArray.length){
         const driver = new Driver({animate: true});
         driver.defineSteps(taskArray);
-        driver.start();
+        //driver.start();
     }
   
 });
