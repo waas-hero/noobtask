@@ -1,23 +1,17 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
  *
  * @link              https://waashero.com/
  * @since             1.0.0
  * @package           Noobtask
  *
  * @wordpress-plugin
- * Plugin Name:       noobtask
+ * Plugin Name:       Starter Tasks - Kartra Edition
  * Plugin URI:        https://waashero.com/noobtask
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Allows the network owner to create tasks for the user, and adds a tag to the user in Kartra, or adds that user to a Kartra List on completion of the task.
  * Version:           1.0.0
- * Author:            J Hanlon
+ * Author:            Waas Hero - J Hanlon
  * Author URI:        https://waashero.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -30,11 +24,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
 define( 'NOOBTASK_VERSION', '1.0.0' );
 
 if(!defined('SUBSITE_TYPE')){
