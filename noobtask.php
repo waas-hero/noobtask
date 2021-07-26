@@ -1,23 +1,17 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
  *
  * @link              https://waashero.com/
  * @since             1.0.0
  * @package           Noobtask
  *
  * @wordpress-plugin
- * Plugin Name:       noobtask
+ * Plugin Name:       Starter Tasks - Kartra Edition
  * Plugin URI:        https://waashero.com/noobtask
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Allows the network owner to create tasks for the user, and adds a tag to the user in Kartra, or adds that user to a Kartra List on completion of the task.
  * Version:           1.0.0
- * Author:            J Hanlon
+ * Author:            Waas Hero - J Hanlon
  * Author URI:        https://waashero.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -25,33 +19,44 @@
  * Domain Path:       /languages
  */
 
+ // Exit if accessed directly
+defined('ABSPATH') || exit;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
-define( 'NOOBTASK_VERSION', '1.0.0' );
+//Set version here so it's easier :D
+define('NOOBTASK_VERSION', '1.0.0');
 
-if(defined('SUBSITE_TYPE') != null){
-	//Define default subsite type for WaasHero Plugins
-	define('SUBSITE_TYPE', 'seller');
-}
+/**
+ * Require core file dependencies
+ */
+require_once __DIR__ . '/constants.php';
+
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-default-tasks.php';
+
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-noobtask-setup-wizard.php';
+
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-noobtask-activator.php';
+
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-noobtask-deactivator.php';
+
+require plugin_dir_path( __FILE__ ) . 'includes/class-noobtask.php';
+
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-noobtask-activator.php
  */
 function activate_noobtask() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-noobtask-activator.php';
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-default-tasks.php';
+	
 	Noobtask_Activator::activate();
 	$activate = new Noobtask_Activator;
 	$activate->create_db_table();
-	$activate->preload_data();
+	$activate->preload_task_data();
+	$activate->preload_option_data();
+
 }
 
 /**
@@ -59,7 +64,6 @@ function activate_noobtask() {
  * This action is documented in includes/class-noobtask-deactivator.php
  */
 function deactivate_noobtask() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-noobtask-deactivator.php';
 	Noobtask_Deactivator::deactivate();
 }
 
@@ -67,16 +71,10 @@ register_activation_hook( __FILE__, 'activate_noobtask' );
 register_deactivation_hook( __FILE__, 'deactivate_noobtask' );
 
 /**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path( __FILE__ ) . 'includes/class-noobtask.php';
-
-/**
  * Begins execution of the plugin.
  *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
+ * Everything within the plugin is registered via hooks,
+ * so kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
  * @since    1.0.0

@@ -32,6 +32,14 @@ class Noobtask_Deactivator {
 	public static function deactivate() {
 		$timestamp = wp_next_scheduled( 'noobtask_cron_hook' );
 		wp_unschedule_event( $timestamp, 'noobtask_cron_hook' );
+
+		if(get_site_option( 'delete_noobtask_on_deactivate')){
+			global $wpdb;
+			$task_table_name = $wpdb->prefix . 'noobtasks';
+			$wpdb->query( "DROP TABLE IF EXISTS {$task_table_name}" );	
+			$option_table_name = $wpdb->prefix . 'noobtask_options';
+			$wpdb->query( "DROP TABLE IF EXISTS {$option_table_name}" );	
+		}
 	}
 
 }

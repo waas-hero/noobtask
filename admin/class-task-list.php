@@ -12,8 +12,8 @@ class Task_List extends WP_List_Table {
     public function __construct() {
 
         parent::__construct( [
-            'singular' => __( 'Task', 'sp' ), //singular name of the listed records
-            'plural' => __( 'Tasks', 'sp' ), //plural name of the listed records
+            'singular' => __( 'Task', 'noobtask' ), //singular name of the listed records
+            'plural' => __( 'Tasks', 'noobtask' ), //plural name of the listed records
             'ajax' => false //should this table support ajax?
         ] );
         
@@ -102,7 +102,7 @@ class Task_List extends WP_List_Table {
 
     /** Text displayed when no customer data is available */
     public function no_items() {
-        _e( 'No tasks avaliable.', 'sp' );
+        _e( 'No tasks avaliable.', 'noobtask' );
     }
 
     /**
@@ -143,6 +143,8 @@ class Task_List extends WP_List_Table {
             case 'task_name':
                 return '<p style="font-size:15px;"><b>'.$item[ $column_name ]."</b></p>";
 
+            case 'task_desc':
+            case 'site_type':
             case 'task_link':
             case 'task_selector':
 
@@ -183,12 +185,14 @@ class Task_List extends WP_List_Table {
     function get_columns() {
         $columns = [
             'cb' => '<input type="checkbox" />',
-            'task_name' => __( 'Name', 'sp' ),
-            'task_link' => __( 'Link', 'sp' ),
-            'task_selector' => __( 'Selector', 'sp' ),
-            'task_list' => __( 'Kartra List', 'sp' ),
-            'task_tag' => __( 'Kartra Tag', 'sp' ),
-            'task_completed' => __( 'Status', 'sp' ),
+            'task_name' => __( 'Name', 'noobtask' ),
+            'task_desc' => __( 'Description', 'noobtask' ),
+            'site_type' => __( 'Site Type', 'noobtask' ),
+            'task_link' => __( 'Link', 'noobtask' ),
+            'task_selector' => __( 'Selector', 'noobtask' ),
+            'task_list' => __( 'Kartra List', 'noobtask' ),
+            'task_tag' => __( 'Kartra Tag', 'noobtask' ),
+            'task_completed' => __( 'Status', 'noobtask' ),
         ];
         
         return $columns;
@@ -205,6 +209,7 @@ class Task_List extends WP_List_Table {
             'task_list' => array( 'task_list', true ),
             'task_tag' => array( 'task_tag', true ),
             'task_list' => array( 'task_list', true ),
+            'site_type' => array( 'site_type', true ),
             'task_completed' => array( 'task_completed', true )
         );
         

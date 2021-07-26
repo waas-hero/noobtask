@@ -65,6 +65,10 @@ class Noobtask_Admin {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/noobtask-admin.css', array(), $this->version, 'all' );
 
+		wp_register_style( 'driver-js-css', plugin_dir_url( __FILE__ ) . 'css/driver.min.css', array(), $this->version, false );
+
+		wp_enqueue_style( 'driver-js-css' );
+
 	}
 
 	/**
@@ -76,6 +80,15 @@ class Noobtask_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/noobtask-admin.js', array( 'jquery' ), $this->version, false );
 
+		// wp_register_script( 'driver-js', plugin_dir_url( __FILE__ ) . 'js/driver.min.js', array( 'jquery' ), $this->version, false );
+
+		// wp_localize_script( 'driver-js', 'noobTasks', self::get_tasks() );
+
+		// wp_enqueue_script( 'driver-js' );
+
+		// wp_register_script( 'noobtask-tour', plugin_dir_url( __FILE__ ) . 'js/noobtask-tour.js', array( 'driver-js' ), $this->version, false );
+
+		// wp_enqueue_script( 'noobtask-tour' );
 	}
 	
 	
@@ -99,20 +112,21 @@ class Noobtask_Admin {
 		$tasks = self::get_tasks();
 		// $job = new CronJobs;
 		// print_r($job->get_default_tasks_from_db());
-		//echo SUBSITE_TYPE;
+		$site_type = NoobTask_Options_Api::get('site_type');
+		
 		?>
 		<div class="noobtask-list-container">
 			
-			<p class="noobtask-title"><?php echo strtoupper(__('Get Started')); ?></p>
+			<p class="noobtask-title"><?php echo 'Your current site type: <b>'.$site_type.'</b>'; ?></p>
 			<div class="noobtask-list" style="width:100%; display:flex; flex-direction:column;list-style-type: none;">
 	
-				<?php foreach($tasks as $task){ ?>
-
-					<button data-task='<?php echo json_encode($task); ?>' class="noobtask-item <?php if($task['task_completed']){echo 'noobtask-completed';}else{echo 'noobtask-incomplete';} ?>">
+				<?php foreach($tasks as $key => $task){ if( ($task['site_type'] === $site_type || $task['site_type'] == null) && $task['visible']){ ?>
+					
+					<button data-task='<?php echo json_encode($task); ?>' class="noobtask-item noobtask-<?php echo $key; if($task['task_completed']){echo ' noobtask-completed';}else{echo ' noobtask-incomplete';} ?>">
 						<p id="noobtask-<?php echo $task['task_id']; ?>" class="noobtask-name"><?php echo strtoupper($task['task_name']); ?></p>
 					</button>
 			
-			<?php } ?>
+			<?php } } ?>
 			</div>
 		</div>
 
