@@ -17,8 +17,8 @@ This is the long description.  No limit, and we can use Markdown (as well as in 
 
 == Installation ==
 
-1. Upload `noobtask.php` to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
+1. Upload and install the zipped plugin through the network 'Plugins' menu in WordPress.
+2. Activate the plugin through the network 'Plugins' menu in WordPress.
 3. Add your KARTRA_API_KEY and KARTRA_API_PASS to your wp_config.php file.
 4. Make sure any tags you want to use are added to your karta account before creating tasks. 
 
@@ -26,7 +26,7 @@ This is the long description.  No limit, and we can use Markdown (as well as in 
 
 = Is this plugin multisite compatible? =
 
-Yes, you can activate it per site and it will function normally.
+Yes, please install this plugin on the network plugins page.
 
 = Will this plugin work without a Karta account? =
 
