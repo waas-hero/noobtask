@@ -70,11 +70,8 @@ class Noobtask {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'NOOBTASK_VERSION' ) ) {
-			$this->version = NOOBTASK_VERSION;
-		} else {
-			$this->version = '1.0.0';
-		}
+
+		$this->version = NOOBTASK_VERSION;
 		$this->plugin_name = 'noobtask';
 
 		$this->load_dependencies();
@@ -118,43 +115,43 @@ class Noobtask {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-noobtask-i18n.php';
 
 		/**
-		 * The class responsible for defining all actions that occur in the admin area.
+		 * The class responsible for defining actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-noobtask-admin.php';
 
 		/**
-		 * The class responsible for defining all actions that occur in the public-facing
+		 * The class responsible for defining actions that occur in the public-facing
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-noobtask-public.php';
 
 		/**
-		 * The class responsible for defining all kartra api functions and related ajax actions.
+		 * The class responsible for defining all kartra api methods and related ajax actions.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-kartra-api.php';
 
 		/**
-		 * The class responsible for defining noobtask option api functions.
+		 * The class responsible for defining noobtask option api methods.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-noobtask-options-api.php';
 
 		/**
-		 * The class responsible for defining noobtask api functions.
+		 * The class responsible for defining noobtask api methods.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-noobtask-api.php';
 
 		/**
-		 * The class responsible for defining all default tasks.
+		 * The class responsible for defining all default tasks and actions.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-default-tasks.php';
 
 		/**
-		 * The class responsible for defining all the cron jobs.
+		 * The class responsible for defining all the cron jobs and methods.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cron-jobs.php';
 
 		/**
-		 * The class responsible for defining the custom task list. We extend the default wordpress list.
+		 * The class responsible for defining a custom task admin list. We extend the default wordpress list.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-task-list.php';
 
@@ -164,9 +161,10 @@ class Noobtask {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-task-add-edit-page.php';
 
 		/**
-		 * The class responsible for defining the noobtask options page and related methods.
+		 * The class responsible for defining the noobtask network options page and related methods.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-task-options-page.php';
+
 
 		$this->loader = new Noobtask_Loader();
 
@@ -214,6 +212,9 @@ class Noobtask {
 		$options_page = new Task_Network_Options_Page( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'network_admin_menu', $options_page, 'add_menu');
 		$this->loader->add_action( 'network_admin_edit_noobtaskaction', $options_page, 'save_settings' );
+
+		$setup_wizard = new Noobtask_Setup_Wizard( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'admin_menu', $setup_wizard, 'admin_menus', 99 );		
 
 	}
 

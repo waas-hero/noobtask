@@ -46,6 +46,13 @@ class Task_Network_Options_Page {
 	
 			<h2>Network Options</h2>
 			<table class="form-table">
+            <tr>
+					<th scope="row"><label for="noobtask_app_title">Application Title</label></th>
+					<td>
+						<input name="noobtask_app_title" class="regular-text" type="text" id="noobtask_app_title" value="<?php echo esc_attr( get_site_option( 'noobtask_app_title') ); ?>" />
+						<p class="description">The name that users see when your application is referred to.</p>
+					</td>
+				</tr>
 				<tr>
 					<th scope="row"><label for="noobtask_widget_title">Widget Title</label></th>
 					<td>
@@ -53,6 +60,7 @@ class Task_Network_Options_Page {
 						<!-- <p class="description">Field description can be added here.</p> -->
 					</td>
 				</tr>
+                
 			</table>
 			<h2>Extra Options</h2>
 			<table class="form-table">
@@ -74,8 +82,10 @@ class Task_Network_Options_Page {
 
         $delete_noobtask_on_deactivate = intval($_POST["delete_noobtask_on_deactivate"]);
         $noobtask_widget_title = sanitize_text_field($_POST["noobtask_widget_title"]);
+        $noobtask_app_title = sanitize_text_field($_POST["noobtask_app_title"]);
 
         update_site_option( 'noobtask_widget_title', $noobtask_widget_title );
+        update_site_option( 'noobtask_app_title', $noobtask_app_title );
         update_site_option( 'delete_noobtask_on_deactivate', $delete_noobtask_on_deactivate );
 
         wp_redirect( add_query_arg( array(

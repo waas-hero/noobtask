@@ -19,38 +19,44 @@
  * Domain Path:       /languages
  */
 
+ // Exit if accessed directly
+defined('ABSPATH') || exit;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'NOOBTASK_VERSION', '1.0.0' );
+//Set version here so it's easier :D
+define('NOOBTASK_VERSION', '1.0.0');
 
-if(!defined('SUBSITE_TYPE')){
-	//Define default subsite type for WaasHero Plugins
-	define('SUBSITE_TYPE', 'seller');
-}
+/**
+ * Require core file dependencies
+ */
+require_once __DIR__ . '/constants.php';
 
-if(!defined('KARTRA_API_KEY')){
-	//Define default subsite type for WaasHero Plugins
-	define('KARTRA_API_KEY', '');
-}
-if(!defined('KARTRA_API_PASS')){
-	//Define default subsite type for WaasHero Plugins
-	define('KARTRA_API_PASS', '');
-}
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-default-tasks.php';
+
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-noobtask-setup-wizard.php';
+
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-noobtask-activator.php';
+
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-noobtask-deactivator.php';
+
+require plugin_dir_path( __FILE__ ) . 'includes/class-noobtask.php';
+
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-noobtask-activator.php
  */
 function activate_noobtask() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-noobtask-activator.php';
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-default-tasks.php';
+	
 	Noobtask_Activator::activate();
 	$activate = new Noobtask_Activator;
 	$activate->create_db_table();
 	$activate->preload_task_data();
 	$activate->preload_option_data();
+
 }
 
 /**
@@ -58,7 +64,6 @@ function activate_noobtask() {
  * This action is documented in includes/class-noobtask-deactivator.php
  */
 function deactivate_noobtask() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-noobtask-deactivator.php';
 	Noobtask_Deactivator::deactivate();
 }
 
@@ -66,16 +71,10 @@ register_activation_hook( __FILE__, 'activate_noobtask' );
 register_deactivation_hook( __FILE__, 'deactivate_noobtask' );
 
 /**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path( __FILE__ ) . 'includes/class-noobtask.php';
-
-/**
  * Begins execution of the plugin.
  *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
+ * Everything within the plugin is registered via hooks,
+ * so kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
  * @since    1.0.0

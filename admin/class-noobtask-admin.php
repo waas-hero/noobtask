@@ -80,15 +80,15 @@ class Noobtask_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/noobtask-admin.js', array( 'jquery' ), $this->version, false );
 
-		wp_register_script( 'driver-js', plugin_dir_url( __FILE__ ) . 'js/driver.min.js', array( 'jquery' ), $this->version, false );
+		// wp_register_script( 'driver-js', plugin_dir_url( __FILE__ ) . 'js/driver.min.js', array( 'jquery' ), $this->version, false );
 
-		wp_localize_script( 'driver-js', 'noobTasks', self::get_tasks() );
+		// wp_localize_script( 'driver-js', 'noobTasks', self::get_tasks() );
 
-		wp_enqueue_script( 'driver-js' );
+		// wp_enqueue_script( 'driver-js' );
 
-		wp_register_script( 'noobtask-tour', plugin_dir_url( __FILE__ ) . 'js/noobtask-tour.js', array( 'driver-js' ), $this->version, false );
+		// wp_register_script( 'noobtask-tour', plugin_dir_url( __FILE__ ) . 'js/noobtask-tour.js', array( 'driver-js' ), $this->version, false );
 
-		wp_enqueue_script( 'noobtask-tour' );
+		// wp_enqueue_script( 'noobtask-tour' );
 	}
 	
 	
